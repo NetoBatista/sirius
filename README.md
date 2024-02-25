@@ -22,7 +22,7 @@ CONNECTION_STRING=Host=localhost;Database=sirius;Username=postgres;Password=Senh
 Para criação do postgresql no docker basta copiar o comando abaixo para um arquivo Dockerfile e executar: docker-compose up -d
 
 ```
-name: postgres
+version: '3.3'
 services:
   postgres:
     image: postgres
