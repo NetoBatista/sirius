@@ -28,6 +28,8 @@
     private ICategoryService categoryService { get; set; } = default!;
     [Parameter]
     public CategoryRequestDTO request { get; set; } = default!;
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
     private string ErrorMessage = "";
 
     private async Task OnClickUpdate()
@@ -40,13 +42,18 @@
                 StateHasChanged();
                 return;
             }
+            if (await categoryService.Exists(request))
+            {
+                toastProvider.ShowToast("Já existe uma categoria com esse nome", ToastLevelEnum.Error);
+                return;
+            }
             var response = await categoryService.Update(request);
+            toastProvider.ShowToast("Atualizado com sucesso", ToastLevelEnum.Success);
             dialogProvider.CloseDialog(response);
         }
         catch (Exception)
         {
-            ErrorMessage = "Erro ao atualizar categoria";
-            StateHasChanged();
+            toastProvider.ShowToast("Erro ao atualizar categoria", ToastLevelEnum.Error);
         }
     }
 

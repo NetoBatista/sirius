@@ -8,5 +8,6 @@ namespace Sirius.Domain.Interface.Service
         Task<CategoryResponseDTO> Update(CategoryRequestDTO request);
         Task Delete(Guid request);
         Task<List<CategoryResponseDTO>> GetAll();
+        Task<bool> Exists(CategoryRequestDTO request);
     }
 }

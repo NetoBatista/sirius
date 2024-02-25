@@ -33,6 +33,13 @@ namespace Sirius.Repository
             await _context.SaveChangesAsync();
         }
 
+        public Task<bool> Exists(Category category)
+        {
+            return _context.Category.AsNoTracking()
+                                    .AnyAsync(x => x.Name.ToUpper() == category.Name.ToUpper() &&
+                                                   x.Id != category.Id);
+        }
+
         public Task<List<Category>> GetAll()
         {
             return _context.Category.AsNoTracking()

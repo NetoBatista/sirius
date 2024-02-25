@@ -26,6 +26,8 @@
     private DialogProvider dialogProvider { get; set; } = default!;
     [Inject]
     private ICategoryService categoryService { get; set; } = default!;
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
     private string ErrorMessage = "";
     private CategoryRequestDTO request = new CategoryRequestDTO();
 
@@ -39,13 +41,18 @@
                 StateHasChanged();
                 return;
             }
+            if (await categoryService.Exists(request))
+            {
+                toastProvider.ShowToast("Já existe uma categoria com esse nome", ToastLevelEnum.Error);
+                return;
+            }
             var response = await categoryService.Create(request);
+            toastProvider.ShowToast("Criado com sucesso", ToastLevelEnum.Success);
             dialogProvider.CloseDialog(response);
         }
         catch(Exception)
         {
-            ErrorMessage = "Erro ao criar categoria";
-            StateHasChanged();
+            toastProvider.ShowToast("Erro ao criar categoria", ToastLevelEnum.Error);
         }
     }
 

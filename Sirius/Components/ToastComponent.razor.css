@@ -1,0 +1,39 @@
+﻿.cs-toast {
+    display: none;
+    padding: 1.5rem;
+    color: #fff;
+    z-index: 3;
+    position: absolute;
+    right: 0;
+    margin-right: 2em;
+    margin-top: 1em;
+    border-radius: 5px;
+    padding: 0px 1em;
+}
+
+.cs-toast-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0.5em;
+}
+
+.cs-toast-body p {
+    margin: 0;
+}
+
+.cs-toast-visible {
+    display: flex;
+    flex-direction: row;
+    animation: fadein 1.5s;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

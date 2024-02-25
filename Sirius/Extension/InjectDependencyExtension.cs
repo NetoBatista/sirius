@@ -31,6 +31,8 @@ namespace Sirius.Extension
         private static void InjectProvider(IServiceCollection services)
         {
             services.AddSingleton<DialogProvider>();
+            services.AddSingleton<ToastProvider>();
+            services.AddTransient<JavaScriptProvider>();
         }
 
         private static void InjectRepository(IServiceCollection services)

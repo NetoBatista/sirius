@@ -32,6 +32,8 @@
     private ICategoryService categoryService { get; set; } = default!;
     [Parameter]
     public CategoryResponseDTO category { get; set; } = default!;
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
     private string ErrorMessage = "";
 
     private async Task OnClickDelete()
@@ -39,12 +41,12 @@
         try
         {
             await categoryService.Delete(category.Id);
+            toastProvider.ShowToast("Deletado com sucesso", ToastLevelEnum.Success);
             dialogProvider.CloseDialog(category);
         }
         catch (Exception)
         {
-            ErrorMessage = "Erro ao remover categoria";
-            StateHasChanged();
+            toastProvider.ShowToast("Erro ao remover categoria", ToastLevelEnum.Error);
         }
     }
 
