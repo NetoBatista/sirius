@@ -38,6 +38,7 @@ namespace Sirius.Extension
         private static void InjectRepository(IServiceCollection services)
         {
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
         }
 
         private static void InjectServices(IServiceCollection services)
