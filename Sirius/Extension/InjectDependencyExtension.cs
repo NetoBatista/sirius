@@ -44,6 +44,7 @@ namespace Sirius.Extension
         private static void InjectServices(IServiceCollection services)
         {
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IPaymentService, PaymentService>();
         }
     }
 }

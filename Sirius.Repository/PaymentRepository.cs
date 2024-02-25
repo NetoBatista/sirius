@@ -32,11 +32,11 @@ namespace Sirius.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task<bool> Exists(Payment category)
+        public Task<bool> Exists(Payment payment)
         {
             return _context.Payment.AsNoTracking()
-                                   .AnyAsync(x => x.Name.ToUpper() == category.Name.ToUpper() &&
-                                                  x.Id != category.Id);
+                                   .AnyAsync(x => x.Name.ToUpper() == payment.Name.ToUpper() &&
+                                                  x.Id != payment.Id);
         }
 
         public Task<List<Payment>> GetAll()
