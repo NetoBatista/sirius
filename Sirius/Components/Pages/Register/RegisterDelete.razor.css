@@ -1,0 +1,16 @@
+﻿.register-delete-content > div{
+    margin-bottom: 1em;
+}
+
+.register-delete-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.register-delete-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.register-delete-action button {
+    width: 10em;
+}

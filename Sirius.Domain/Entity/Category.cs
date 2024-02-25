@@ -10,6 +10,6 @@
 
         public DateTime CreateAt { get; set; }
 
-        public virtual ICollection<Register> RegisterNavigation { get; set; } = new List<Register>();
+        public virtual ICollection<Payment> PaymentNavigation { get; set; } = [];
     }
 }

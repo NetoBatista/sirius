@@ -25,6 +25,12 @@ namespace Sirius.Service
             return _categoryRepository.Delete(request);
         }
 
+        public Task<bool> Exists(CategoryRequestDTO request)
+        {
+            var entity = request.ToEntity();
+            return _categoryRepository.Exists(entity);
+        }
+
         public async Task<List<CategoryResponseDTO>> GetAll()
         {
             var response = await _categoryRepository.GetAll();

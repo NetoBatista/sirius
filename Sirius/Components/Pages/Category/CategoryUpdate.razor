@@ -12,12 +12,9 @@
         <button class="btn-default" @onclick=OnClickClose>
             Cancelar
         </button>
-        <button class="btn-default" @onclick=OnClickUpdate>
+        <button class="btn-default-action" @onclick=OnClickUpdate>
             Atualizar
         </button>
-    </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
     </div>
 </div>
 
@@ -28,7 +25,8 @@
     private ICategoryService categoryService { get; set; } = default!;
     [Parameter]
     public CategoryRequestDTO request { get; set; } = default!;
-    private string ErrorMessage = "";
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
 
     private async Task OnClickUpdate()
     {
@@ -36,17 +34,21 @@
         {
             if (string.IsNullOrEmpty(request.Name))
             {
-                ErrorMessage = "Nome da categoria é obrigatório";
-                StateHasChanged();
+                toastProvider.ShowToast("Nome da categoria é obrigatório", ToastLevelEnum.Error);
+                return;
+            }
+            if (await categoryService.Exists(request))
+            {
+                toastProvider.ShowToast("Já existe uma categoria com esse nome", ToastLevelEnum.Error);
                 return;
             }
             var response = await categoryService.Update(request);
+            toastProvider.ShowToast("Atualizado com sucesso", ToastLevelEnum.Success);
             dialogProvider.CloseDialog(response);
         }
         catch (Exception)
         {
-            ErrorMessage = "Erro ao atualizar categoria";
-            StateHasChanged();
+            toastProvider.ShowToast("Erro ao atualizar categoria", ToastLevelEnum.Error);
         }
     }
 

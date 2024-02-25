@@ -62,8 +62,11 @@ namespace Sirius.Domain.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
+
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)")
                         .HasColumnName("description");
@@ -85,6 +88,8 @@ namespace Sirius.Domain.Migrations
                     b.HasKey("Id")
                         .HasName("payment_pkey");
 
+                    b.HasIndex("CategoryId");
+
                     b.HasIndex(new[] { "Name" }, "payment_name_key")
                         .IsUnique();
 
@@ -99,15 +104,11 @@ namespace Sirius.Domain.Migrations
                         .HasColumnName("id")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("category_id");
-
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("PaidAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createdat");
 
-                    b.Property<Guid?>("PaymentId")
+                    b.Property<Guid>("PaymentId")
                         .HasColumnType("uuid")
                         .HasColumnName("payment_id");
 
@@ -118,33 +119,36 @@ namespace Sirius.Domain.Migrations
                     b.HasKey("Id")
                         .HasName("register_pkey");
 
-                    b.HasIndex("CategoryId");
-
                     b.HasIndex("PaymentId");
 
                     b.ToTable("register", (string)null);
                 });
 
-            modelBuilder.Entity("Sirius.Domain.Entity.Register", b =>
+            modelBuilder.Entity("Sirius.Domain.Entity.Payment", b =>
                 {
                     b.HasOne("Sirius.Domain.Entity.Category", "CategoryNavigation")
-                        .WithMany("RegisterNavigation")
+                        .WithMany("PaymentNavigation")
                         .HasForeignKey("CategoryId")
-                        .HasConstraintName("register_category_id_fkey");
+                        .HasConstraintName("payment_category_id_fkey");
 
+                    b.Navigation("CategoryNavigation");
+                });
+
+            modelBuilder.Entity("Sirius.Domain.Entity.Register", b =>
+                {
                     b.HasOne("Sirius.Domain.Entity.Payment", "PaymentNavigation")
                         .WithMany("RegisterNavigation")
                         .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("register_payment_id_fkey");
-
-                    b.Navigation("CategoryNavigation");
 
                     b.Navigation("PaymentNavigation");
                 });
 
             modelBuilder.Entity("Sirius.Domain.Entity.Category", b =>
                 {
-                    b.Navigation("RegisterNavigation");
+                    b.Navigation("PaymentNavigation");
                 });
 
             modelBuilder.Entity("Sirius.Domain.Entity.Payment", b =>

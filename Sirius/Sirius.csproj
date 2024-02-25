@@ -12,4 +12,10 @@
 		<ProjectReference Include="..\Sirius.Service\Sirius.Service.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="wwwroot\sirius_util.js">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

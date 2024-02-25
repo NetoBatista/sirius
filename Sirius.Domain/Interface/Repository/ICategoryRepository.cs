@@ -8,5 +8,6 @@ namespace Sirius.Domain.Interface.Repository
         Task<Category> Update(Category category);
         Task Delete(Guid id);
         Task<List<Category>> GetAll();
+        Task<bool> Exists(Category category);
     }
 }

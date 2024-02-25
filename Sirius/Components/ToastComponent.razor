@@ -1,0 +1,56 @@
+﻿<div class="cs-toast @(_isVisible ? "cs-toast-visible" : null) @_backgroundCssClass" style="z-index: 3;">
+    <div class="cs-toast-body">
+        <p>@_message</p>
+    </div>
+</div>
+
+@code {
+    private string? _message;
+    private bool _isVisible;
+    private string? _backgroundCssClass;
+
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        toastProvider.OnShow += ShowToast;
+        toastProvider.OnHide += HideToast;
+    }
+
+    private void ShowToast(string message, ToastLevelEnum level)
+    {
+        BuildToastSettings(level, message);
+        _isVisible = true;
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void HideToast()
+    {
+        _isVisible = false;
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void BuildToastSettings(ToastLevelEnum level, string message)
+    {
+        switch (level)
+        {
+            case ToastLevelEnum.Info:
+                _backgroundCssClass = $"bg-info";
+                break;
+            case ToastLevelEnum.Success:
+                _backgroundCssClass = $"bg-success";
+                break;
+            case ToastLevelEnum.Warning:
+                _backgroundCssClass = $"bg-warning";
+                break;
+            case ToastLevelEnum.Error:
+                _backgroundCssClass = "bg-danger";
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(level), level, null);
+        }
+
+        _message = message;
+    }
+}

@@ -1,33 +1,30 @@
-﻿.div-search-content > span {
+﻿.div-search-content-category > span {
     margin-right: 1em;
 }
 
-.div-search-content button {
+.div-search-content-category button {
     margin-left: 1em;
 }
 
-.div-search-content input {
+.div-search-content-category input {
     width: 20em;
 }
 
-.div-content {
+.div-content-category {
     margin-top: 2em;
     height: 80vh;
     overflow: auto;
 }
 
-table {
+.div-content-category table {
     border: 1px solid grey;
 }
 
-
-
-th {
+.div-content-category th {
     border: none;
 }
 
-td {
+.div-content-category td {
     border-top: 0.5px solid grey;
     vertical-align: middle;
-    overflow: auto;
 }

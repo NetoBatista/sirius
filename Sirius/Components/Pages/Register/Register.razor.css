@@ -1,0 +1,30 @@
+﻿.div-search-content-register > span {
+    margin-right: 1em;
+}
+
+.div-search-content-register button {
+    margin-left: 1em;
+}
+
+.div-search-content-register input {
+    width: 20em;
+}
+
+.div-content-register {
+    margin-top: 2em;
+    height: 80vh;
+    overflow: auto;
+}
+
+.div-content-register table {
+    border: 1px solid grey;
+}
+
+.div-content-register th {
+    border: none;
+}
+
+.div-content-register td {
+    border-top: 0.5px solid grey;
+    vertical-align: middle;
+}

@@ -12,12 +12,9 @@
         <button class="btn-default" @onclick=OnClickClose>
             Cancelar
         </button>
-        <button class="btn-default" @onclick=OnClickCreate>
+        <button class="btn-default-action" @onclick=OnClickCreate>
             Criar
         </button>
-    </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
     </div>
 </div>
 
@@ -26,7 +23,8 @@
     private DialogProvider dialogProvider { get; set; } = default!;
     [Inject]
     private ICategoryService categoryService { get; set; } = default!;
-    private string ErrorMessage = "";
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
     private CategoryRequestDTO request = new CategoryRequestDTO();
 
     private async Task OnClickCreate()
@@ -35,17 +33,21 @@
         {
             if (string.IsNullOrEmpty(request.Name))
             {
-                ErrorMessage = "Nome da categoria é obrigatório";
-                StateHasChanged();
+                toastProvider.ShowToast("Nome da categoria é obrigatório", ToastLevelEnum.Error);
+                return;
+            }
+            if (await categoryService.Exists(request))
+            {
+                toastProvider.ShowToast("Já existe uma categoria com esse nome", ToastLevelEnum.Error);
                 return;
             }
             var response = await categoryService.Create(request);
+            toastProvider.ShowToast("Criado com sucesso", ToastLevelEnum.Success);
             dialogProvider.CloseDialog(response);
         }
         catch(Exception)
         {
-            ErrorMessage = "Erro ao criar categoria";
-            StateHasChanged();
+            toastProvider.ShowToast("Erro ao criar categoria", ToastLevelEnum.Error);
         }
     }
 

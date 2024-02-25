@@ -1,0 +1,97 @@
+﻿
+<div class="payment-update-content">
+    <div class="d-grid">
+        <span>* Nome</span>
+        <input placeholder="Netflix" maxlength="256" @bind-value="request.Name" />
+    </div>
+    <div class="d-grid">
+        <span>Descrição</span>
+        <textarea placeholder="Plano premium" rows="5" maxlength="1000" @bind="request.Description" />
+    </div>
+    <div class="d-grid">
+        <span>Valor</span>
+        <InputNumber TValue="decimal" @bind-Value=request.Value class="currency-mask"></InputNumber>
+    </div>
+    <div class="d-grid">
+        <span>Categoria</span>
+        <select @bind="request.CategoryId">
+            <option value="">Nenhum</option>
+            @foreach (var category in categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </select>
+    </div>
+    <div class="d-grid">
+        <span>Dia do pagamento</span>
+        <select @bind="request.PayDay">
+            <option value="">Nenhum</option>
+            @for (var index =1; index <= 31; index ++)
+            {
+                <option value="@index">@index</option>
+            }
+        </select>
+    </div>
+    <div class="d-flex payment-update-action">
+        <button class="btn-default" @onclick=OnClickClose>
+            Cancelar
+        </button>
+        <button class="btn-default-action" @onclick=OnClickUpdate>
+            Atualizar
+        </button>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private DialogProvider dialogProvider { get; set; } = default!;
+    [Inject]
+    private IPaymentService paymentService { get; set; } = default!;
+    [Inject]
+    private ICategoryService categoryService { get; set; } = default!;
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
+    [Inject]
+    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    [Parameter]
+    public PaymentRequestDTO request { get; set; } = default!;
+    private List<CategoryResponseDTO> categories = new List<CategoryResponseDTO>();
+
+    protected override void OnAfterRender(bool firstRender) => javaScriptProvider.ApplyCurrencyMask();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await categoryService.GetAll();
+        categories = categories.OrderBy(x => x.Name).ToList();
+        StateHasChanged();
+    }
+
+    private async Task OnClickUpdate()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(request.Name))
+            {
+                toastProvider.ShowToast("Nome da pagamento é obrigatório", ToastLevelEnum.Error);
+                return;
+            }
+            if (await paymentService.Exists(request))
+            {
+                toastProvider.ShowToast("Já existe um pagamento com esse nome", ToastLevelEnum.Error);
+                return;
+            }
+            var response = await paymentService.Update(request);
+            toastProvider.ShowToast("Atualizado com sucesso com sucesso", ToastLevelEnum.Success);
+            dialogProvider.CloseDialog(response);
+        }
+        catch(Exception)
+        {
+            toastProvider.ShowToast("Erro ao criar pagamento", ToastLevelEnum.Error);
+        }
+    }
+
+    private void OnClickClose()
+    {
+        dialogProvider.CloseDialog();
+    }
+}

@@ -16,12 +16,9 @@
         <button class="btn-default" @onclick=OnClickClose>
             Cancelar
         </button>
-        <button class="btn-default" @onclick=OnClickDelete>
+        <button class="btn-default-danger" @onclick=OnClickDelete>
             Remover
         </button>
-    </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
     </div>
 </div>
 
@@ -32,19 +29,20 @@
     private ICategoryService categoryService { get; set; } = default!;
     [Parameter]
     public CategoryResponseDTO category { get; set; } = default!;
-    private string ErrorMessage = "";
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
 
     private async Task OnClickDelete()
     {
         try
         {
             await categoryService.Delete(category.Id);
+            toastProvider.ShowToast("Deletado com sucesso", ToastLevelEnum.Success);
             dialogProvider.CloseDialog(category);
         }
         catch (Exception)
         {
-            ErrorMessage = "Erro ao remover categoria";
-            StateHasChanged();
+            toastProvider.ShowToast("Erro ao remover categoria", ToastLevelEnum.Error);
         }
     }
 

@@ -1,0 +1,100 @@
+﻿
+<div class="register-create-content">
+    <div class="d-grid">
+        <span>Pagamento</span>
+        <select @onchange="OnChangePayment">
+            <option value="">Nenhum</option>
+            @foreach (var payment in payments)
+            {
+                <option value="@payment.Id">@payment.Name</option>
+            }
+        </select>
+    </div>
+    <div class="d-grid">
+        <span>Valor</span>
+        <InputNumber TValue="decimal" @bind-Value=request.Value class="currency-mask"></InputNumber>
+    </div>
+    <div class="d-grid">
+        <span>Data do pagamento</span>
+        <input type="date" @bind-value=request.PaidAt 
+               max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
+               min="@DateUtil.GetMinDate().ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="d-flex register-create-action">
+        <button class="btn-default" @onclick=OnClickClose>
+            Cancelar
+        </button>
+        <button class="btn-default-action" @onclick=OnClickCreate>
+            Criar
+        </button>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private DialogProvider dialogProvider { get; set; } = default!;
+    [Inject]
+    private IRegisterService registerService { get; set; } = default!;
+    [Inject]
+    private IPaymentService paymentService { get; set; } = default!;
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
+    [Inject]
+    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    private RegisterRequestDTO request = new RegisterRequestDTO { PaidAt = DateTime.UtcNow };
+    private List<PaymentResponseDTO> payments = new List<PaymentResponseDTO>();
+
+    protected override void OnAfterRender(bool firstRender) => javaScriptProvider.ApplyCurrencyMask();
+
+    protected override async Task OnInitializedAsync()
+    {
+        payments = await paymentService.GetAll();
+        payments = payments.OrderBy(x => x.Name).ToList();
+        StateHasChanged();
+    }
+
+    private async Task OnClickCreate()
+    {
+        try
+        {
+            if (request.PaymentId == Guid.Empty)
+            {
+                toastProvider.ShowToast("É necessário selecionar um pagamento", ToastLevelEnum.Error);
+                return;
+            }
+            request.PaidAt = request.PaidAt.ToUniversalTime();
+            if (request.PaidAt > DateTime.UtcNow || request.PaidAt < DateUtil.GetMinDate())
+            {
+                var error = $"Data precisar ser entre {DateTime.UtcNow.ToShortDateString()} e {DateUtil.GetMinDate().ToShortDateString()}";
+                toastProvider.ShowToast(error, ToastLevelEnum.Error);
+                return;
+            }
+            var response = await registerService.Create(request);
+            toastProvider.ShowToast("Criado com sucesso", ToastLevelEnum.Success);
+            dialogProvider.CloseDialog(response);
+        }
+        catch(Exception)
+        {
+            toastProvider.ShowToast("Erro ao criar registro", ToastLevelEnum.Error);
+        }
+    }
+
+    private void OnChangePayment(ChangeEventArgs args)
+    {
+        var paymentId = args.Value?.ToString();
+        if (paymentId == null)
+        {
+            return;
+        }
+
+        var payment = payments.First(x => x.Id == new Guid(paymentId));
+        request.PaymentId = payment.Id;
+        request.Value = payment.Value;
+        StateHasChanged();
+    }
+
+    private void OnClickClose()
+    {
+        dialogProvider.CloseDialog();
+    }
+}

@@ -70,9 +70,16 @@ namespace Sirius.Domain.Entity
                     .HasMaxLength(256)
                     .HasColumnName("name");
 
+                entity.Property(e => e.CategoryId).HasColumnName("category_id");
+
                 entity.Property(e => e.PayDay).HasColumnName("pay_day");
 
                 entity.Property(e => e.Value).HasColumnName("value");
+
+                entity.HasOne(d => d.CategoryNavigation)
+                    .WithMany(p => p.PaymentNavigation)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("payment_category_id_fkey");
             });
 
             modelBuilder.Entity<Register>(entity =>
@@ -85,20 +92,13 @@ namespace Sirius.Domain.Entity
                     .HasDefaultValueSql("gen_random_uuid()")
                     .HasColumnName("id");
 
-                entity.Property(e => e.CategoryId).HasColumnName("category_id");
-
-                entity.Property(e => e.CreatedAt)
+                entity.Property(e => e.PaidAt)
                     .HasColumnType("timestamp with time zone")
                     .HasColumnName("createdat");
 
                 entity.Property(e => e.PaymentId).HasColumnName("payment_id");
 
                 entity.Property(e => e.Value).HasColumnName("value");
-
-                entity.HasOne(d => d.CategoryNavigation)
-                    .WithMany(p => p.RegisterNavigation)
-                    .HasForeignKey(d => d.CategoryId)
-                    .HasConstraintName("register_category_id_fkey");
 
                 entity.HasOne(d => d.PaymentNavigation)
                     .WithMany(p => p.RegisterNavigation)

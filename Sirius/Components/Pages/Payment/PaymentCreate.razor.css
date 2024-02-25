@@ -1,0 +1,16 @@
+﻿.payment-create-content > div{
+    margin-bottom: 1em;
+}
+
+.payment-create-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.payment-create-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.payment-create-action button {
+    width: 10em;
+}

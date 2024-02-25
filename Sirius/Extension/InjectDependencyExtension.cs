@@ -31,16 +31,22 @@ namespace Sirius.Extension
         private static void InjectProvider(IServiceCollection services)
         {
             services.AddSingleton<DialogProvider>();
+            services.AddSingleton<ToastProvider>();
+            services.AddTransient<JavaScriptProvider>();
         }
 
         private static void InjectRepository(IServiceCollection services)
         {
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IRegisterRepository, RegisterRepository>();
         }
 
         private static void InjectServices(IServiceCollection services)
         {
             services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IRegisterService, RegisterService>();
         }
     }
 }

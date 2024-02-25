@@ -1,0 +1,16 @@
+﻿.register-create-content > div{
+    margin-bottom: 1em;
+}
+
+.register-create-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.register-create-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.register-create-action button {
+    width: 10em;
+}
