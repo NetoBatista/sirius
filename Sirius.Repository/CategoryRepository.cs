@@ -23,7 +23,8 @@ namespace Sirius.Repository
         public async Task Delete(Guid id)
         {
             var category = _context.Category.AsNoTracking()
-                                            .Include(x => x.RegisterNavigation)
+                                            .Include(x => x.PaymentNavigation)
+                                            .ThenInclude(x => x.RegisterNavigation)
                                             .FirstOrDefault(x => x.Id == id);
             if (category == null)
             {

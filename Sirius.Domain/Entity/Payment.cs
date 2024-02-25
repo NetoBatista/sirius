@@ -12,6 +12,9 @@
 
         public decimal Value { get; set; }
 
+        public Guid? CategoryId { get; set; }
+
         public virtual ICollection<Register> RegisterNavigation { get; set; } = new List<Register>();
+        public virtual Category? CategoryNavigation { get; set; }
     }
 }

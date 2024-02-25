@@ -10,10 +10,6 @@
 
         public decimal Value { get; set; }
 
-        public Guid? CategoryId { get; set; }
-
-        public virtual Category? CategoryNavigation { get; set; }
-
         public virtual Payment? PaymentNavigation { get; set; }
     }
 }
