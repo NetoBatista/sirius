@@ -14,6 +14,12 @@
         <span>Valor</span>
         <InputNumber TValue="decimal" @bind-Value=request.Value class="currency-mask"></InputNumber>
     </div>
+    <div class="d-grid">
+        <span>Data do pagamento</span>
+        <input type="date" @bind-value=request.CreatedAt 
+               max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
+               min="@DateUtil.GetMinDate().ToString("yyyy-MM-dd")" />
+    </div>
     <div class="d-flex register-create-action">
         <button class="btn-default" @onclick=OnClickClose>
             Cancelar
@@ -35,7 +41,7 @@
     private ToastProvider toastProvider { get; set; } = default!;
     [Inject]
     private JavaScriptProvider javaScriptProvider { get; set; } = default!;
-    private RegisterRequestDTO request = new RegisterRequestDTO();
+    private RegisterRequestDTO request = new RegisterRequestDTO { CreatedAt = DateTime.UtcNow };
     private List<PaymentResponseDTO> payments = new List<PaymentResponseDTO>();
 
     protected override void OnAfterRender(bool firstRender) => javaScriptProvider.ApplyCurrencyMask();
@@ -54,6 +60,13 @@
             if (request.PaymentId == Guid.Empty)
             {
                 toastProvider.ShowToast("É necessário selecionar um pagamento", ToastLevelEnum.Error);
+                return;
+            }
+            request.CreatedAt = request.CreatedAt.ToUniversalTime();
+            if (request.CreatedAt > DateTime.UtcNow || request.CreatedAt < DateUtil.GetMinDate())
+            {
+                var error = $"Data precisar ser entre {DateTime.UtcNow.ToShortDateString()} e {DateUtil.GetMinDate().ToShortDateString()}";
+                toastProvider.ShowToast(error, ToastLevelEnum.Error);
                 return;
             }
             var response = await registerService.Create(request);

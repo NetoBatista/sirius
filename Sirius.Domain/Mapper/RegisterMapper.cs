@@ -12,6 +12,7 @@ namespace Sirius.Domain.Mapper
                 Id = request.Id ?? Guid.Empty,
                 Value = request.Value,
                 PaymentId = request.PaymentId,
+                CreatedAt = request.CreatedAt,
             };
         }
 
@@ -32,7 +33,8 @@ namespace Sirius.Domain.Mapper
             {
                 Id = response.Id,
                 Value = response.Value,
-                PaymentId = response.Payment.Id
+                PaymentId = response.Payment.Id,
+                CreatedAt = response.CreatedAt,
             };
         }
     }

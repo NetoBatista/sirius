@@ -8,7 +8,6 @@ namespace Sirius.Repository
     {
         public async Task<Register> Create(Register register)
         {
-            register.CreatedAt = DateTime.UtcNow;
             context.Register.Add(register);
             await context.SaveChangesAsync();
             return register;
@@ -39,6 +38,7 @@ namespace Sirius.Repository
             var entity = context.Register.AsNoTracking().First(x => x.Id == register.Id);
             entity.Value = register.Value;
             entity.PaymentId = register.PaymentId;
+            entity.CreatedAt = register.CreatedAt;
             context.Register.Update(entity);
             await context.SaveChangesAsync();
             return entity;

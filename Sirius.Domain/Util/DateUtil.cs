@@ -15,5 +15,10 @@
                 return response.AddDays(-1);
             }
         }
+
+        public static DateTime GetMinDate()
+        {
+            return new DateTime(2000, 1, 1);
+        }
     }
 }
