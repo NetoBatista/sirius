@@ -1,0 +1,16 @@
+﻿.payment-update-content > div{
+    margin-bottom: 1em;
+}
+
+.payment-update-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.payment-update-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.payment-update-action button {
+    width: 10em;
+}

@@ -2,19 +2,19 @@
 
 <PageTitle>Pagamentos</PageTitle>
 
-@if (categories == null)
+@if (payments == null)
 {
     <LoadingComponent isInLineProgress=true></LoadingComponent>
 }
 
-<div class="div-search-content">
+<div class="div-search-content-payment">
     <span>Filtros: </span>
-    <input @bind-value="searchContent" @bind-value:event="oninput" placeholder="Nome ou descrição da categoria" />
+    <input @bind-value="searchContent" @bind-value:event="oninput" placeholder="Nome ou descrição do pagamento" />
     <button class="btn-default" @onclick=OnClickCreate>
-        <span>Nova categoria</span>
+        <span>Novo pagamento</span>
     </button>
 </div>
-<div class="div-content @(categories == null ? "d-none" : "")">
+<div class="div-content-payment @(payments == null ? "d-none" : "")">
     <table class="table">
         <thead>
             <tr>
@@ -22,43 +22,47 @@
                 <th>Id</th>
                 <th>Nome</th>
                 <th>Descrição</th>
-                <th>Criado em</th>
+                <th>Valor</th>
+                <th>Pagar em</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var category in FilterCategory())
+            @foreach (var payment in FilterPayment())
             {
                 <tr>
-                    <td style="width: 8em">
-                        <button class="btn-icon-default" @onclick=@(() => OnClickDelete(category))>
+                    <td style="width: 10em">
+                        <button class="btn-icon-default" @onclick=@(() => OnClickDelete(payment))>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
                                 <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
                             </svg>
                         </button>
-                        <button class="btn-icon-default" @onclick=@(() => OnClickUpdate(category))>
+                        <button class="btn-icon-default" @onclick=@(() => OnClickUpdate(payment))>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
                             </svg>
                         </button>
-                        <button class="btn-icon-default" @onclick=@(() => OnClickCopyToClipboard(category))>
+                        <button class="btn-icon-default" @onclick=@(() => OnClickCopyToClipboard(payment))>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
                                 <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
                                 <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
                             </svg>
                         </button>
                     </td>
-                    <td style="width:15em; max-width: 15em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        @category.Id
+                    <td style="max-width:8em; width:8em" class="td-overflow">
+                        @payment.Id
                         </td>
-                    <td style="width:15em; max-width: 15em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                        @category.Name
+                    <td style="max-width:10em; width:10em" class="td-overflow">
+                        @payment.Name
                     </td>
-                    <td>
-                        @category.Description
+                    <td style="max-width: 20em;" class="td-overflow">
+                        @payment.Description
                     </td>
-                    <td style="width: 10em">
-                        @category.CreateAt.ToShortDateString()
+                    <td style="max-width:8em; width:8em">
+                        @payment.Value
+                    </td>
+                    <td style="max-width:8em; width:8em">
+                        @GetPaymentAt(payment.PayDay)?.ToShortDateString()
                     </td>
                 </tr>
             }
@@ -67,10 +71,10 @@
 </div>
 
 @code {
-    private List<CategoryResponseDTO>? categories;
+    private List<PaymentResponseDTO>? payments;
     private string searchContent = "";
     [Inject]
-    private ICategoryService categoryService { get; set; } = default!;
+    private IPaymentService paymentService { get; set; } = default!;
     [Inject]
     private DialogProvider dialogProvider { get; set; } = default!;
     [Inject]
@@ -78,21 +82,31 @@
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await categoryService.GetAll();
+        payments = await paymentService.GetAll();
     }
 
-    private List<CategoryResponseDTO> FilterCategory()
+    private DateTime? GetPaymentAt(int? payDay)
     {
-        if (categories == null)
+        if(payDay == null)
+        {
+            return null;
+        }
+
+        return DateUtil.CurrentDateByDay(payDay.Value);
+    }
+
+    private List<PaymentResponseDTO> FilterPayment()
+    {
+        if (payments == null)
         {
             return [];
         }
         if (string.IsNullOrEmpty(searchContent))
         {
-            return categories;
+            return payments;
         }
-        return categories.Where(x => x.Name.ToUpper().Contains(searchContent.ToUpper()) ||
-                                     (x.Description ?? string.Empty).ToUpper().Contains(searchContent.ToUpper()))
+        return payments.Where(x => x.Name.ToUpper().Contains(searchContent.ToUpper()) ||
+                                   (x.Description ?? string.Empty).ToUpper().Contains(searchContent.ToUpper()))
                          .ToList();
     }
 
@@ -100,78 +114,78 @@
     {
         RenderFragment body = __builder =>
         {
-            <CategoryCreate />
+            <PaymentCreate />
         };
-        dialogProvider.OpenDialog("Nova categoria", body, CallBackCreateCategory);
+        dialogProvider.OpenDialog("Novo pagamento", body, CallBackCreatePayment);
     }
 
-    private void OnClickUpdate(CategoryResponseDTO category)
+    private void OnClickUpdate(PaymentResponseDTO payment)
     {
         RenderFragment body = __builder =>
         {
-            <CategoryUpdate request="category.ToRequest()" />
+            <PaymentUpdate request="payment.ToRequest()" />
         };
-        dialogProvider.OpenDialog("Atualizar categoria", body, CallBackUpdateCategory);
+        dialogProvider.OpenDialog("Atualizar pagamento", body, CallBackUpdatePayment);
     }
-    private void OnClickDelete(CategoryResponseDTO category)
+    private void OnClickDelete(PaymentResponseDTO payment)
     {
         RenderFragment body = __builder =>
         {
-            <CategoryDelete category="category" />
+            <PaymentDelete payment="payment" />
         };
-        dialogProvider.OpenDialog("Remover categoria", body, CallBackDeleteCategory);
+        dialogProvider.OpenDialog("Remover pagamento", body, CallBackDeletePayment);
     }
 
 
-    private Task CallBackCreateCategory(object? obj)
+    private Task CallBackCreatePayment(object? obj)
     {
-        var created = obj as CategoryResponseDTO;
+        var created = obj as PaymentResponseDTO;
         if (created != null)
         {
-            categories!.Insert(0, created);
+            payments!.Insert(0, created);
             StateHasChanged();
         }
         return Task.CompletedTask;
     }
 
-    private Task CallBackDeleteCategory(object? obj)
+    private Task CallBackDeletePayment(object? obj)
     {
-        if (categories == null)
+        if (payments == null)
         {
             return Task.CompletedTask;
         }
-        var removed = obj as CategoryResponseDTO;
+        var removed = obj as PaymentResponseDTO;
         if (removed != null)
         {
-            var item = categories.First(x => x.Id == removed.Id);
-            var indexOf = categories.IndexOf(item);
-            categories.RemoveAt(indexOf);
+            var item = payments.First(x => x.Id == removed.Id);
+            var indexOf = payments.IndexOf(item);
+            payments.RemoveAt(indexOf);
             StateHasChanged();
         }
         return Task.CompletedTask;
     }
 
-    private Task CallBackUpdateCategory(object? obj)
+    private Task CallBackUpdatePayment(object? obj)
     {
-        if(categories == null)
+        if (payments == null)
         {
             return Task.CompletedTask;
         }
-        var updated = obj as CategoryResponseDTO;
+        var updated = obj as PaymentResponseDTO;
         if (updated != null)
         {
-            var item = categories.First(x => x.Id == updated.Id);
-            var indexOf = categories.IndexOf(item);
-            categories.RemoveAt(indexOf);
-            categories.Insert(indexOf, updated);
+            var item = payments.First(x => x.Id == updated.Id);
+            var indexOf = payments.IndexOf(item);
+            payments.RemoveAt(indexOf);
+            payments.Insert(indexOf, updated);
             StateHasChanged();
         }
         return Task.CompletedTask;
     }
 
-    private void OnClickCopyToClipboard(CategoryResponseDTO category)
+    private void OnClickCopyToClipboard(PaymentResponseDTO payment)
     {
-        javaScriptProvider.CopyToClipBoard(category.Id.ToString());
+        javaScriptProvider.CopyToClipBoard(payment.Id.ToString());
     }
 
 }

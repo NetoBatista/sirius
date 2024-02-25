@@ -11,8 +11,21 @@ input, textarea {
     border-radius: 5px;
 }
 
+select {
+    color: white;
+    background: black;
+    border-radius: 5px;
+    padding: 0.1em;
+}
+
 a, .btn-link {
     color: #006bb7;
+}
+
+.td-overflow {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 span, b, p, svg, h1, h2, h3, h4, h5, article, div, button, td, tr, textarea, input {

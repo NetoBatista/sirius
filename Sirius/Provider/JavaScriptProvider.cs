@@ -2,20 +2,18 @@
 
 namespace Sirius.Provider
 {
-    public class JavaScriptProvider
+    public class JavaScriptProvider(IJSRuntime jSRuntime, ToastProvider toastProvider)
     {
-        private readonly IJSRuntime _jsRunTime;
-        private readonly ToastProvider _toastProvider;
-        public JavaScriptProvider(IJSRuntime jSRuntime, ToastProvider toastProvider)
-        {
-            _jsRunTime = jSRuntime;
-            _toastProvider = toastProvider;
-        }
-
         public void CopyToClipBoard(string text)
         {
-            _jsRunTime.InvokeVoidAsync("navigator.clipboard.writeText", text);
-            _toastProvider.ShowToast("Copiado com sucesso", Enum.ToastLevelEnum.Success);
+            _ = jSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", text);
+            toastProvider.ShowToast("Copiado com sucesso", Enum.ToastLevelEnum.Success);
         }
+
+        public void ApplyCurrencyMask()
+        {
+            _ = jSRuntime.InvokeVoidAsync("window.sirius.applyCurrencyMask");
+        }
+
     }
 }

@@ -1,0 +1,16 @@
+﻿.payment-delete-content > div{
+    margin-bottom: 1em;
+}
+
+.payment-delete-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.payment-delete-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.payment-delete-action button {
+    width: 10em;
+}

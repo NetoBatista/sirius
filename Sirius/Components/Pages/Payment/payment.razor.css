@@ -1,30 +1,30 @@
-﻿.div-search-content-category > span {
+﻿.div-search-content-payment > span {
     margin-right: 1em;
 }
 
-.div-search-content-category button {
+.div-search-content-payment button {
     margin-left: 1em;
 }
 
-.div-search-content-category input {
+.div-search-content-payment input {
     width: 20em;
 }
 
-.div-content-category {
+.div-content-payment {
     margin-top: 2em;
     height: 80vh;
     overflow: auto;
 }
 
-.div-content-category table {
+.div-content-payment table {
     border: 1px solid grey;
 }
 
-.div-content-category th {
+.div-content-payment th {
     border: none;
 }
 
-.div-content-category td {
+.div-content-payment td {
     border-top: 0.5px solid grey;
     vertical-align: middle;
 }
