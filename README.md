@@ -56,5 +56,8 @@ Após o banco criado basta executar o projeto, as tabelas e relacionamentos do b
 
 Vídeo do projeto
 
-https://github.com/NetoBatista/sirius/assets/23426240/48848a21-07d7-4bdd-9b1a-47bf757655fd
+https://github.com/NetoBatista/sirius/assets/23426240/0d1b3e42-87ee-4abc-89de-58dc57d89609
+
+
+
 
