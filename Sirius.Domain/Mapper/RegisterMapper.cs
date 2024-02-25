@@ -21,7 +21,8 @@ namespace Sirius.Domain.Mapper
             {
                 Id = entity.Id,
                 Value = entity.Value,
-                Payment = entity.PaymentNavigation.ToResponse()
+                Payment = entity.PaymentNavigation.ToResponse(),
+                CreatedAt = entity.CreatedAt
             };
         }
 

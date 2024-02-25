@@ -28,7 +28,8 @@ namespace Sirius.Repository
 
         public Task<List<Register>> GetAll(DateTime startDate, DateTime finalDate)
         {
-            return context.Register.AsNoTracking().Where(x => x.CreatedAt >= startDate && x.CreatedAt <= finalDate)
+            return context.Register.Include(x => x.PaymentNavigation)
+                                   .AsNoTracking().Where(x => x.CreatedAt >= startDate && x.CreatedAt <= finalDate)
                                                   .OrderByDescending(x => x.CreatedAt)
                                                   .ToListAsync();
         }

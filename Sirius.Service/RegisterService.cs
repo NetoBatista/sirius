@@ -5,12 +5,13 @@ using Sirius.Domain.Mapper;
 
 namespace Sirius.Service
 {
-    public class RegisterService(IRegisterRepository registerRepository) : IRegisterService
+    public class RegisterService(IRegisterRepository registerRepository, IPaymentRepository paymentRepository) : IRegisterService
     {
         public async Task<RegisterResponseDTO> Create(RegisterRequestDTO request)
         {
             var entity = request.ToEntity();
             var created = await registerRepository.Create(entity);
+            created.PaymentNavigation = await paymentRepository.GetById(created.PaymentId);
             return created.ToResponse();
         }
 
@@ -29,6 +30,7 @@ namespace Sirius.Service
         {
             var entity = request.ToEntity();
             var updated = await registerRepository.Update(entity);
+            updated.PaymentNavigation = await paymentRepository.GetById(updated.PaymentId);
             return updated.ToResponse();
         }
     }

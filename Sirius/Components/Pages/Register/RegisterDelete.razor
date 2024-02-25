@@ -1,0 +1,71 @@
+﻿
+<div class="register-delete-content">
+    <div class="d-grid">
+        <span>Tem certeza que deseja remover esse registro? </span>
+    </div>
+    <div class="d-grid">
+        <span>Pagamento</span>
+        <select @bind=register.Payment.Id disabled>
+            @foreach (var payment in payments)
+            {
+                <option value="@payment.Id">@payment.Name</option>
+            }
+        </select>
+    </div>
+    <div class="d-grid">
+        <span>Valor</span>
+        <InputNumber TValue="decimal" disabled @bind-Value=register.Value class="currency-mask"></InputNumber>
+    </div>
+    <div class="d-flex register-delete-action">
+        <button class="btn-default" @onclick=OnClickClose>
+            Cancelar
+        </button>
+        <button class="btn-default" @onclick=OnClickDelete>
+            Remover
+        </button>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private DialogProvider dialogProvider { get; set; } = default!;
+    [Inject]
+    private IRegisterService registerService { get; set; } = default!;
+    [Inject]
+    private IPaymentService paymentService { get; set; } = default!;
+    [Inject]
+    private ToastProvider toastProvider { get; set; } = default!;
+    [Inject]
+    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    [Parameter]
+    public RegisterResponseDTO register { get; set; } = default!;
+    private List<PaymentResponseDTO> payments = new List<PaymentResponseDTO>();
+
+    protected override void OnAfterRender(bool firstRender) => javaScriptProvider.ApplyCurrencyMask();
+
+    protected override async Task OnInitializedAsync()
+    {
+        payments = await paymentService.GetAll();
+        payments = payments.OrderBy(x => x.Name).ToList();
+        StateHasChanged();
+    }
+
+    private async Task OnClickDelete()
+    {
+        try
+        {
+            await registerService.Delete(register.Id);
+            toastProvider.ShowToast("Deletado com sucesso", ToastLevelEnum.Success);
+            dialogProvider.CloseDialog(register);
+        }
+        catch(Exception)
+        {
+            toastProvider.ShowToast("Erro ao deletar registro", ToastLevelEnum.Error);
+        }
+    }
+
+    private void OnClickClose()
+    {
+        dialogProvider.CloseDialog();
+    }
+}

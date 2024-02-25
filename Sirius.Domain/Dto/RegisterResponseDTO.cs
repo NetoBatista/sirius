@@ -6,6 +6,8 @@
 
         public decimal Value { get; set; }
 
+        public DateTime CreatedAt { get; set; }
+
         public PaymentResponseDTO Payment { get; set; } = default!;
     }
 }

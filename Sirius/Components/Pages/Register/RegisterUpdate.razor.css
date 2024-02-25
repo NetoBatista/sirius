@@ -1,0 +1,16 @@
+﻿.register-update-content > div{
+    margin-bottom: 1em;
+}
+
+.register-update-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.register-update-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.register-update-action button {
+    width: 10em;
+}

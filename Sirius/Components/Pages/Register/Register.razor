@@ -1,63 +1,179 @@
 ﻿@page "/register"
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Registros</PageTitle>
 
-<h1>Weather</h1>
-
-<p>This component demonstrates showing data.</p>
-
-@if (forecasts == null)
+@if (registers == null)
 {
-    <p><em>Loading...</em></p>
+    <LoadingComponent isInLineProgress=true></LoadingComponent>
 }
-else
-{
+
+<div class="div-search-content-register">
+    <span>Filtros: </span>
+    <input @bind-value="searchContent" @bind-value:event="oninput" placeholder="Nome do pagamento" />
+    <button class="btn-default" @onclick=OnClickCreate>
+        <span>Novo registro</span>
+    </button>
+</div>
+<div class="div-content-register @(registers == null ? "d-none" : "")">
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th></th>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Valor</th>
+                <th>Pago em</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var register in FilterRegister())
             {
                 <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                    <td style="max-width: 150px; width: 150px;">
+                        <button class="btn-icon-default" @onclick=@(() => OnClickDelete(register))>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                            </svg>
+                        </button>
+                        <button class="btn-icon-default" @onclick=@(() => OnClickUpdate(register))>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325" />
+                            </svg>
+                        </button>
+                        <button class="btn-icon-default" @onclick=@(() => OnClickCopyToClipboard(register))>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
+                                <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1z" />
+                                <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0z" />
+                            </svg>
+                        </button>
+                    </td>
+                    <td style="max-width:10em; width:10em" class="td-overflow">
+                        @register.Id
+                        </td>
+                    <td>
+                        @register.Payment.Name
+                    </td>
+                    <td style="max-width:8em; width:8em">
+                        @FormatUtil.FormatCurrency(register.Value)
+                    </td>
+                    <td style="max-width:8em; width:8em">
+                        @register.CreatedAt.ToShortDateString()
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-}
+</div>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private List<RegisterResponseDTO>? registers;
+    private string searchContent = "";
+    [Inject]
+    private IRegisterService registerService { get; set; } = default!;
+    [Inject]
+    private DialogProvider dialogProvider { get; set; } = default!;
+    [Inject]
+    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate a loading indicator
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        var currentDate = DateTime.UtcNow;
+        var startDate = new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var finalDate = new DateTime(currentDate.Year, currentDate.Month + 1, 1, 23, 59, 59, DateTimeKind.Utc).AddDays(-1);
+        registers = await registerService.GetAll(startDate, finalDate);
     }
 
-    private class WeatherForecast
+    private List<RegisterResponseDTO> FilterRegister()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        if (registers == null)
+        {
+            return [];
+        }
+        if (string.IsNullOrEmpty(searchContent))
+        {
+            return registers;
+        }
+        return registers.Where(x => x.Payment.Name.ToUpper().Contains(searchContent.ToUpper()))
+                        .ToList();
     }
+
+    private void OnClickCreate()
+    {
+        RenderFragment body = __builder =>
+        {
+            <RegisterCreate />
+        };
+        dialogProvider.OpenDialog("Novo registro", body, CallBackCreateRegister);
+    }
+
+    private void OnClickUpdate(RegisterResponseDTO register)
+    {
+        RenderFragment body = __builder =>
+        {
+            <RegisterUpdate request="register.ToRequest()" />
+        };
+        dialogProvider.OpenDialog("Atualizar registro", body, CallBackUpdateRegister);
+    }
+    private void OnClickDelete(RegisterResponseDTO register)
+    {
+        RenderFragment body = __builder =>
+        {
+            <RegisterDelete register="register" />
+        };
+        dialogProvider.OpenDialog("Remover registro", body, CallBackDeleteRegister);
+    }
+
+
+    private Task CallBackCreateRegister(object? obj)
+    {
+        var created = obj as RegisterResponseDTO;
+        if (created != null)
+        {
+            registers!.Insert(0, created);
+            StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+    private Task CallBackDeleteRegister(object? obj)
+    {
+        if (registers == null)
+        {
+            return Task.CompletedTask;
+        }
+        var removed = obj as RegisterResponseDTO;
+        if (removed != null)
+        {
+            var item = registers.First(x => x.Id == removed.Id);
+            var indexOf = registers.IndexOf(item);
+            registers.RemoveAt(indexOf);
+            StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+    private Task CallBackUpdateRegister(object? obj)
+    {
+        if (registers == null)
+        {
+            return Task.CompletedTask;
+        }
+        var updated = obj as RegisterResponseDTO;
+        if (updated != null)
+        {
+            var item = registers.First(x => x.Id == updated.Id);
+            var indexOf = registers.IndexOf(item);
+            registers.RemoveAt(indexOf);
+            registers.Insert(indexOf, updated);
+            StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+    private void OnClickCopyToClipboard(RegisterResponseDTO register)
+    {
+        javaScriptProvider.CopyToClipBoard(register.Id.ToString());
+    }
+
 }

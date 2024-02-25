@@ -38,6 +38,11 @@ namespace Sirius.Repository
             return context.Payment.AsNoTracking().OrderBy(x => x.Name).ToListAsync();
         }
 
+        public Task<Payment> GetById(Guid id)
+        {
+            return context.Payment.AsNoTracking().FirstAsync(x => x.Id == id);
+        }
+
         public async Task<Payment> Update(Payment payment)
         {
             var entity = context.Payment.AsNoTracking().First(x => x.Id == payment.Id);
