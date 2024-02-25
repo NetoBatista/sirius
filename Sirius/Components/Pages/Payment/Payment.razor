@@ -59,7 +59,7 @@
                         @payment.Description
                     </td>
                     <td style="max-width:8em; width:8em">
-                        @payment.Value
+                        @FormatUtil.FormatCurrency(payment.Value)
                     </td>
                     <td style="max-width:8em; width:8em">
                         @GetPaymentAt(payment.PayDay)?.ToShortDateString()

@@ -16,9 +16,6 @@
             Criar
         </button>
     </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
-    </div>
 </div>
 
 @code {
@@ -28,7 +25,6 @@
     private ICategoryService categoryService { get; set; } = default!;
     [Inject]
     private ToastProvider toastProvider { get; set; } = default!;
-    private string ErrorMessage = "";
     private CategoryRequestDTO request = new CategoryRequestDTO();
 
     private async Task OnClickCreate()
@@ -37,8 +33,7 @@
         {
             if (string.IsNullOrEmpty(request.Name))
             {
-                ErrorMessage = "Nome da categoria é obrigatório";
-                StateHasChanged();
+                toastProvider.ShowToast("Nome da categoria é obrigatório", ToastLevelEnum.Error);
                 return;
             }
             if (await categoryService.Exists(request))

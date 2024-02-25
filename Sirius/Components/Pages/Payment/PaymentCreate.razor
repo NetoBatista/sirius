@@ -40,9 +40,6 @@
             Criar
         </button>
     </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
-    </div>
 </div>
 
 @code {
@@ -56,7 +53,6 @@
     private ToastProvider toastProvider { get; set; } = default!;
     [Inject]
     private JavaScriptProvider javaScriptProvider { get; set; } = default!;
-    private string ErrorMessage = "";
     private PaymentRequestDTO request = new PaymentRequestDTO();
     private List<CategoryResponseDTO> categories = new List<CategoryResponseDTO>();
 
@@ -75,8 +71,7 @@
         {
             if (string.IsNullOrEmpty(request.Name))
             {
-                ErrorMessage = "Nome da pagamento é obrigatório";
-                StateHasChanged();
+                toastProvider.ShowToast("Nome da pagamento é obrigatório", ToastLevelEnum.Error);
                 return;
             }
             if (await paymentService.Exists(request))

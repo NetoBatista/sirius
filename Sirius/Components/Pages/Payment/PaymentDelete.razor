@@ -44,9 +44,6 @@
             Remover
         </button>
     </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
-    </div>
 </div>
 
 @code {
@@ -60,7 +57,6 @@
     private ToastProvider toastProvider { get; set; } = default!;
     [Inject]
     private JavaScriptProvider javaScriptProvider { get; set; } = default!;
-    private string ErrorMessage = "";
     [Parameter]
     public PaymentResponseDTO payment { get; set; } = default!;
     private List<CategoryResponseDTO> categories = new List<CategoryResponseDTO>();

@@ -20,9 +20,6 @@
             Remover
         </button>
     </div>
-    <div>
-        <span style="color: red">@ErrorMessage</span>
-    </div>
 </div>
 
 @code {
@@ -34,7 +31,6 @@
     public CategoryResponseDTO category { get; set; } = default!;
     [Inject]
     private ToastProvider toastProvider { get; set; } = default!;
-    private string ErrorMessage = "";
 
     private async Task OnClickDelete()
     {
