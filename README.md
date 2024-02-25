@@ -19,7 +19,7 @@ Comando: dotnet run
 CONNECTION_STRING=Host=localhost;Database=sirius;Username=postgres;Password=Senha123!
 ```
 
-Para criação do postgresql no docker basta copiar o comando abaixo para um arquivo Dockerfile e executar: docker-compose up -d
+Para criação do postgresql no docker basta copiar o comando abaixo para um arquivo docker-compose.yml e executar: **docker-compose up -d**
 
 ```
 version: '3.3'
