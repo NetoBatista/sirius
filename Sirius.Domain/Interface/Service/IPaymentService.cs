@@ -8,6 +8,6 @@ namespace Sirius.Domain.Interface.Service
         Task<PaymentResponseDTO> Update(PaymentRequestDTO payment);
         Task Delete(Guid id);
         Task<List<PaymentResponseDTO>> GetAll();
-        Task<bool> Exists(PaymentRequestDTO category);
+        Task<bool> Exists(PaymentRequestDTO payment);
     }
 }

@@ -39,12 +39,14 @@ namespace Sirius.Extension
         {
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<IRegisterRepository, RegisterRepository>();
         }
 
         private static void InjectServices(IServiceCollection services)
         {
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IRegisterService, RegisterService>();
         }
     }
 }
