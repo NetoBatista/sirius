@@ -53,7 +53,7 @@ namespace Sirius.Repository
             var entity = _context.Category.AsNoTracking().First(x => x.Id == category.Id);
             entity.Name = category.Name;
             entity.Description = category.Description;
-            _context.Category.Update(category);
+            _context.Category.Update(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
