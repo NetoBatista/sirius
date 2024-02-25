@@ -54,6 +54,39 @@ networks:
 
 Após o banco criado basta executar o projeto, as tabelas e relacionamentos do banco é criado via migration, sem a necessidade de realizar configuração
 
+## Executar o projeto no docker
+**Precisa ter previamente o postgresql instalado**
+
+DockerFile
+```
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
+
+WORKDIR /app
+
+RUN apt-get update
+ENV TZ=America/Sao_Paulo
+
+RUN git clone https://github.com/NetoBatista/sirius
+
+WORKDIR /app/sirius
+
+RUN dotnet restore
+RUN dotnet publish -c release -o output
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+WORKDIR /app
+COPY --from=build-env /app/sirius/output .
+
+ENV TZ=America/Sao_Paulo
+ENV ASPNETCORE_ENVIRONMENT="Production"
+ENV CONNECTION_STRING="Host=172.17.0.1;Database=sirius;Username=postgres;Password=Senha123!"
+
+ENTRYPOINT ["dotnet", "Sirius.dll"]
+```
+
+Para subir o docker 
+```sudo docker run -d --name sirius --restart always -p 5001:8080 sirius;```
+
 Vídeo do projeto
 
 https://github.com/NetoBatista/sirius/assets/23426240/0d1b3e42-87ee-4abc-89de-58dc57d89609
