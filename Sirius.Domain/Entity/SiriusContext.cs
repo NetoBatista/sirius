@@ -92,7 +92,7 @@ namespace Sirius.Domain.Entity
                     .HasDefaultValueSql("gen_random_uuid()")
                     .HasColumnName("id");
 
-                entity.Property(e => e.CreatedAt)
+                entity.Property(e => e.PaidAt)
                     .HasColumnType("timestamp with time zone")
                     .HasColumnName("createdat");
 

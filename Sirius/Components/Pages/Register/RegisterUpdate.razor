@@ -15,7 +15,7 @@
     </div>
     <div class="d-grid">
         <span>Data do pagamento</span>
-        <input type="date" @bind-value=request.CreatedAt
+        <input type="date" @bind-value=request.PaidAt
                max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
                min="@DateUtil.GetMinDate().ToString("yyyy-MM-dd")" />
     </div>
@@ -75,8 +75,8 @@
                 toastProvider.ShowToast("É necessário selecionar um pagamento", ToastLevelEnum.Error);
                 return;
             }
-            request.CreatedAt = request.CreatedAt.ToUniversalTime();
-            if (request.CreatedAt > DateTime.UtcNow || request.CreatedAt < DateUtil.GetMinDate())
+            request.PaidAt = request.PaidAt.ToUniversalTime();
+            if (request.PaidAt > DateTime.UtcNow || request.PaidAt < DateUtil.GetMinDate())
             {
                 var error = $"Data precisar ser entre {DateTime.UtcNow.ToShortDateString()} e {DateUtil.GetMinDate().ToShortDateString()}";
                 toastProvider.ShowToast(error, ToastLevelEnum.Error);

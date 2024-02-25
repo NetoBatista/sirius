@@ -12,7 +12,7 @@ namespace Sirius.Domain.Mapper
                 Id = request.Id ?? Guid.Empty,
                 Value = request.Value,
                 PaymentId = request.PaymentId,
-                CreatedAt = request.CreatedAt,
+                PaidAt = request.PaidAt,
             };
         }
 
@@ -23,7 +23,7 @@ namespace Sirius.Domain.Mapper
                 Id = entity.Id,
                 Value = entity.Value,
                 Payment = entity.PaymentNavigation.ToResponse(),
-                CreatedAt = entity.CreatedAt
+                PaidAt = entity.PaidAt
             };
         }
 
@@ -34,7 +34,7 @@ namespace Sirius.Domain.Mapper
                 Id = response.Id,
                 Value = response.Value,
                 PaymentId = response.Payment.Id,
-                CreatedAt = response.CreatedAt,
+                PaidAt = response.PaidAt,
             };
         }
     }

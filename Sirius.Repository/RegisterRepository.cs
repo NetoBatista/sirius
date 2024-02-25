@@ -28,8 +28,8 @@ namespace Sirius.Repository
         public Task<List<Register>> GetAll(DateTime startDate, DateTime finalDate)
         {
             return context.Register.Include(x => x.PaymentNavigation)
-                                   .AsNoTracking().Where(x => x.CreatedAt >= startDate && x.CreatedAt <= finalDate)
-                                                  .OrderByDescending(x => x.CreatedAt)
+                                   .AsNoTracking().Where(x => x.PaidAt >= startDate && x.PaidAt <= finalDate)
+                                                  .OrderByDescending(x => x.PaidAt)
                                                   .ToListAsync();
         }
 
@@ -38,7 +38,7 @@ namespace Sirius.Repository
             var entity = context.Register.AsNoTracking().First(x => x.Id == register.Id);
             entity.Value = register.Value;
             entity.PaymentId = register.PaymentId;
-            entity.CreatedAt = register.CreatedAt;
+            entity.PaidAt = register.PaidAt;
             context.Register.Update(entity);
             await context.SaveChangesAsync();
             return entity;
