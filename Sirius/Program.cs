@@ -8,13 +8,6 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.InjectDependency(builder.Configuration);
 builder.Services.ExecuteMigrations();
 
-var port = Environment.GetEnvironmentVariable("ASPNETCORE_HTTP_PORTS");
-if (!string.IsNullOrEmpty(port))
-{
-    builder.WebHost.UseUrls($"http://*:{port}");
-}
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
