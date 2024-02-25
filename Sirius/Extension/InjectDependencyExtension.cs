@@ -20,7 +20,11 @@ namespace Sirius.Extension
 
         private static void InjectDataBase(IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetSection("ConnectionString").Value ?? string.Empty;
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = "Host=localhost;Database=sirius;Username=postgres;Password=Senha123!";
+            }
             services.AddDbContext<SiriusContext>(options =>
             {
                 options.UseNpgsql(connectionString!);
