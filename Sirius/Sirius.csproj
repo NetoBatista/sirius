@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Sirius.Domain\Sirius.Domain.csproj" />
+		<ProjectReference Include="..\Sirius.Repository\Sirius.Repository.csproj" />
+		<ProjectReference Include="..\Sirius.Service\Sirius.Service.csproj" />
+	</ItemGroup>
+
+</Project>

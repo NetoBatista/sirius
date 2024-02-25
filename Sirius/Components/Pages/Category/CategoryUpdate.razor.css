@@ -1,0 +1,16 @@
+﻿.category-update-content > div{
+    margin-bottom: 1em;
+}
+
+.category-update-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.category-update-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.category-update-action button {
+    width: 10em;
+}

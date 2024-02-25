@@ -1,0 +1,33 @@
+﻿.div-search-content > span {
+    margin-right: 1em;
+}
+
+.div-search-content button {
+    margin-left: 1em;
+}
+
+.div-search-content input {
+    width: 20em;
+}
+
+.div-content {
+    margin-top: 2em;
+    height: 80vh;
+    overflow: auto;
+}
+
+table {
+    border: 1px solid grey;
+}
+
+
+
+th {
+    border: none;
+}
+
+td {
+    border-top: 0.5px solid grey;
+    vertical-align: middle;
+    overflow: auto;
+}

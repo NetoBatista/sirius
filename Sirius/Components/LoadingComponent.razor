@@ -1,0 +1,17 @@
+﻿@if (isInLineProgress)
+{
+    <div class="loader-inline" style=@style></div>
+}
+else 
+{
+    <div class="loader-circle" style=@style></div>
+}
+
+@code {
+    [Parameter]
+    public string style { get; set; } = string.Empty;
+    [Parameter]
+    public bool isInLineProgress { get; set; } = false;
+    [Parameter]
+    public bool showLoading { get; set; } = false;
+}

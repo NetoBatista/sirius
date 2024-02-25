@@ -1,0 +1,55 @@
+﻿
+<div class="category-delete-content">
+    <div class="d-grid">
+        <span>Tem certeza que deseja remover essa categoria? </span>
+        <span>Todos os pagamentos realizados nessa categoria também serão removidos. </span>
+    </div>
+    <div class="d-grid">
+        <span>Nome</span>
+        <input readonly placeholder="Streaming" maxlength="256" @bind-value="category.Name" />
+    </div>
+    <div class="d-grid">
+        <span>Descrição</span>
+        <textarea readonly placeholder="Netflix + HBO + Amazon prime" rows="5" maxlength="1000" @bind="category.Description" />
+    </div>
+    <div class="d-flex category-delete-action">
+        <button class="btn-default" @onclick=OnClickClose>
+            Cancelar
+        </button>
+        <button class="btn-default" @onclick=OnClickDelete>
+            Remover
+        </button>
+    </div>
+    <div>
+        <span style="color: red">@ErrorMessage</span>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private DialogProvider dialogProvider { get; set; } = default!;
+    [Inject]
+    private ICategoryService categoryService { get; set; } = default!;
+    [Parameter]
+    public CategoryResponseDTO category { get; set; } = default!;
+    private string ErrorMessage = "";
+
+    private async Task OnClickDelete()
+    {
+        try
+        {
+            await categoryService.Delete(category.Id);
+            dialogProvider.CloseDialog(category);
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Erro ao remover categoria";
+            StateHasChanged();
+        }
+    }
+
+    private void OnClickClose()
+    {
+        dialogProvider.CloseDialog();
+    }
+}

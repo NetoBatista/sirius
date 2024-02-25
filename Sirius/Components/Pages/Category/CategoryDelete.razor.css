@@ -1,0 +1,16 @@
+﻿.category-delete-content > div{
+    margin-bottom: 1em;
+}
+
+.category-delete-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.category-delete-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.category-delete-action button {
+    width: 10em;
+}

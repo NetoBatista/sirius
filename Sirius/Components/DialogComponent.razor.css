@@ -1,0 +1,15 @@
+﻿.modal {
+    z-index: 2;
+}
+
+.modal-backdrop {
+    z-index: 1;
+}
+
+.modal-content {
+    background: #2e2e2e;
+}
+
+.modal-header {
+    border-bottom: 1px solid grey;
+}

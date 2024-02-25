@@ -1,0 +1,56 @@
+﻿
+<div class="category-create-content">
+    <div class="d-grid">
+        <span>* Nome</span>
+        <input  placeholder="Streaming" maxlength="256" @bind-value="request.Name" />
+    </div>
+    <div class="d-grid">
+        <span>Descrição</span>
+        <textarea placeholder="Netflix + HBO + Amazon prime" rows="5" maxlength="1000" @bind="request.Description" />
+    </div>
+    <div class="d-flex category-create-action">
+        <button class="btn-default" @onclick=OnClickClose>
+            Cancelar
+        </button>
+        <button class="btn-default" @onclick=OnClickCreate>
+            Criar
+        </button>
+    </div>
+    <div>
+        <span style="color: red">@ErrorMessage</span>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private DialogProvider dialogProvider { get; set; } = default!;
+    [Inject]
+    private ICategoryService categoryService { get; set; } = default!;
+    private string ErrorMessage = "";
+    private CategoryRequestDTO request = new CategoryRequestDTO();
+
+    private async Task OnClickCreate()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(request.Name))
+            {
+                ErrorMessage = "Nome da categoria é obrigatório";
+                StateHasChanged();
+                return;
+            }
+            var response = await categoryService.Create(request);
+            dialogProvider.CloseDialog(response);
+        }
+        catch(Exception)
+        {
+            ErrorMessage = "Erro ao criar categoria";
+            StateHasChanged();
+        }
+    }
+
+    private void OnClickClose()
+    {
+        dialogProvider.CloseDialog();
+    }
+}

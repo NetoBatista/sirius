@@ -1,0 +1,16 @@
+﻿.category-create-content > div{
+    margin-bottom: 1em;
+}
+
+.category-create-content > div > span {
+    margin-bottom: 0.2em;
+}
+
+.category-create-action {
+    margin-top: 2em;
+    justify-content: space-between;
+}
+
+.category-create-action button {
+    width: 10em;
+}

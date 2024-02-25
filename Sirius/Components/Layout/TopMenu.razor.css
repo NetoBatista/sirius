@@ -1,0 +1,11 @@
+﻿.div-top-menu > button {
+    margin-right: 1em;
+}
+
+.div-top-menu span, .div-top-menu svg{
+    color: grey;
+}
+
+.top-menu-selected span, .top-menu-selected svg {
+    color: white;
+}
