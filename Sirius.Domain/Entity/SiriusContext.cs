@@ -20,7 +20,12 @@ namespace Sirius.Domain.Entity
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=sirius;Username=postgres;Password=Senha123!");
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = "Host=localhost;Database=sirius;Username=postgres;Password=Senha123!";
+            }
+            optionsBuilder.UseNpgsql(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
