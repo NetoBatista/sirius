@@ -1,0 +1,30 @@
+﻿.home-content-header {
+    margin-top: 1em;
+}
+
+.home-content-header .custom-card {
+    width: 100%;
+    margin-right: 1em;
+}
+
+.home-content-header .custom-card > div {
+    margin-bottom: 0.5em;
+}
+
+.home-content {
+    margin-top: 1em;
+}
+
+.home-content-registers {
+    width: 100%;
+    margin-right: 2em;
+}
+
+.home-content-payments {
+    width: 60%;
+}
+
+.home-content-registers table, .home-content-payments table {
+    border: 1px solid grey;
+    margin-top: 1em;
+}
