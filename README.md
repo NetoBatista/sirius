@@ -64,7 +64,6 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 WORKDIR /app
 
 RUN apt-get update
-ENV TZ=America/Sao_Paulo
 
 RUN git clone https://github.com/NetoBatista/sirius
 
@@ -77,7 +76,20 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0
 WORKDIR /app
 COPY --from=build-env /app/sirius/output .
 
+# Set the timezone to America/Sao_Paulo
 ENV TZ=America/Sao_Paulo
+
+# Install the pt-br locale for date formatting
+RUN apt-get update && apt-get install -y locales && \
+    echo "pt_BR.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen pt_BR.UTF-8 && \
+    update-locale LANG=pt_BR.UTF-8
+
+# Set the locale to pt-br
+ENV LC_ALL=pt_BR.UTF-8
+ENV LANG=pt_BR.UTF-8
+ENV LANGUAGE=pt_BR.UTF-8
+
 ENV ASPNETCORE_ENVIRONMENT="Production"
 ENV CONNECTION_STRING="Host=172.17.0.1;Database=sirius;Username=postgres;Password=Senha123!"
 
