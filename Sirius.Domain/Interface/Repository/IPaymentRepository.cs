@@ -9,6 +9,6 @@ namespace Sirius.Domain.Interface.Repository
         Task Delete(Guid id);
         Task<List<Payment>> GetAll();
         Task<Payment> GetById(Guid id);
-        Task<bool> Exists(Payment category);
+        Task<bool> Exists(Payment payment);
     }
 }

@@ -5,42 +5,36 @@ using Sirius.Domain.Mapper;
 
 namespace Sirius.Service
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService(ICategoryRepository categoryRepository) : ICategoryService
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(ICategoryRepository categoryRepository)
-        {
-            _categoryRepository = categoryRepository;
-        }
-
         public async Task<CategoryResponseDTO> Create(CategoryRequestDTO request)
         {
             var entity = request.ToEntity();
-            var created = await _categoryRepository.Create(entity);
+            var created = await categoryRepository.Create(entity);
             return created.ToResponse();
         }
 
         public Task Delete(Guid request)
         {
-            return _categoryRepository.Delete(request);
+            return categoryRepository.Delete(request);
         }
 
         public Task<bool> Exists(CategoryRequestDTO request)
         {
             var entity = request.ToEntity();
-            return _categoryRepository.Exists(entity);
+            return categoryRepository.Exists(entity);
         }
 
         public async Task<List<CategoryResponseDTO>> GetAll()
         {
-            var response = await _categoryRepository.GetAll();
+            var response = await categoryRepository.GetAll();
             return response.Select(x => x.ToResponse()).ToList();
         }
 
         public async Task<CategoryResponseDTO> Update(CategoryRequestDTO request)
         {
             var entity = request.ToEntity();
-            var updated = await _categoryRepository.Update(entity);
+            var updated = await categoryRepository.Update(entity);
             return updated.ToResponse();
         }
     }

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Repository", "Sirius
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sirius.Service", "Sirius.Service\Sirius.Service.csproj", "{14555436-AE8A-4262-9498-65BA8D086A9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sirius.Test", "Sirius.Test\Sirius.Test.csproj", "{699B255F-7FCA-42EC-A159-C0BDCB3F218E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{14555436-AE8A-4262-9498-65BA8D086A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14555436-AE8A-4262-9498-65BA8D086A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14555436-AE8A-4262-9498-65BA8D086A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{699B255F-7FCA-42EC-A159-C0BDCB3F218E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{699B255F-7FCA-42EC-A159-C0BDCB3F218E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{699B255F-7FCA-42EC-A159-C0BDCB3F218E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{699B255F-7FCA-42EC-A159-C0BDCB3F218E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
