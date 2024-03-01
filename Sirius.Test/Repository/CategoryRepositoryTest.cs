@@ -9,8 +9,7 @@ namespace Sirius.Test.Repository
     [TestClass]
     public class CategoryRepositoryTest
     {
-
-        private ICategoryRepository _categoryRepository
+        private static ICategoryRepository CategoryRepository
         {
             get
             {
@@ -32,7 +31,7 @@ namespace Sirius.Test.Repository
         public async Task Create()
         {
             var category = RandomUtil.Category();
-            var created = await _categoryRepository.Create(category);
+            var created = await CategoryRepository.Create(category);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
         }
@@ -41,7 +40,7 @@ namespace Sirius.Test.Repository
         public async Task UpdateExisting()
         {
             var category = RandomUtil.Category();
-            var created = await _categoryRepository.Create(category);
+            var created = await CategoryRepository.Create(category);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
 
@@ -50,7 +49,7 @@ namespace Sirius.Test.Repository
             created.Name = newName;
             created.Description = newDescription;
 
-            var updated = await _categoryRepository.Update(created);
+            var updated = await CategoryRepository.Update(created);
             Assert.IsNotNull(updated);
             Assert.AreEqual(updated.Id, created.Id);
             Assert.AreEqual(updated.Name, newName);
@@ -61,7 +60,7 @@ namespace Sirius.Test.Repository
         public async Task UpdateNotExisting()
         {
             var category = RandomUtil.Category();
-            var action = () => _categoryRepository.Update(category);
+            var action = () => CategoryRepository.Update(category);
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(action);
             Assert.IsNotNull(exception);
         }
@@ -79,19 +78,19 @@ namespace Sirius.Test.Repository
             [
                payment
             ];
-            var created = await _categoryRepository.Create(category);
+            var created = await CategoryRepository.Create(category);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
 
-            await _categoryRepository.Delete(created.Id);
-            var categories = await _categoryRepository.GetAll();
+            await CategoryRepository.Delete(created.Id);
+            var categories = await CategoryRepository.GetAll();
             Assert.IsFalse(categories.Any(x => x.Id == created.Id));
         }
 
         [TestMethod("Should not be delete if the category not existing")]
         public async Task DeleteNotExisting()
         {
-            var action = () => _categoryRepository.Delete(Guid.NewGuid());
+            var action = () => CategoryRepository.Delete(Guid.NewGuid());
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(action);
             Assert.IsNotNull(exception);
         }
@@ -100,10 +99,10 @@ namespace Sirius.Test.Repository
         public async Task ExistisCategory()
         {
             var category = RandomUtil.Category();
-            var created = await _categoryRepository.Create(category);
+            var created = await CategoryRepository.Create(category);
             var newCategory = RandomUtil.Category();
             newCategory.Name = created.Name;
-            var exists = await _categoryRepository.Exists(newCategory);
+            var exists = await CategoryRepository.Exists(newCategory);
             Assert.IsTrue(exists);
         }
 
@@ -111,7 +110,7 @@ namespace Sirius.Test.Repository
         public async Task NotExistisCategory()
         {
             var category = RandomUtil.Category();
-            var exists = await _categoryRepository.Exists(category);
+            var exists = await CategoryRepository.Exists(category);
             Assert.IsFalse(exists);
         }
 
@@ -119,8 +118,8 @@ namespace Sirius.Test.Repository
         public async Task GetAll()
         {
             var category = RandomUtil.Category();
-            var created = await _categoryRepository.Create(category);
-            var categories = await _categoryRepository.GetAll();
+            var created = await CategoryRepository.Create(category);
+            var categories = await CategoryRepository.GetAll();
             Assert.IsNotNull(categories);
             Assert.IsTrue(categories.Any(x => x.Id == created.Id));
         }

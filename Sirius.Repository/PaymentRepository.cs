@@ -16,12 +16,8 @@ namespace Sirius.Repository
         public async Task Delete(Guid id)
         {
             var payment = context.Payment.AsNoTracking()
-                                          .Include(x => x.RegisterNavigation)
-                                          .FirstOrDefault(x => x.Id == id);
-            if (payment == null)
-            {
-                return;
-            }
+                                         .Include(x => x.RegisterNavigation)
+                                         .First(x => x.Id == id);
             context.Payment.Remove(payment);
             await context.SaveChangesAsync();
         }
@@ -29,8 +25,8 @@ namespace Sirius.Repository
         public Task<bool> Exists(Payment payment)
         {
             return context.Payment.AsNoTracking()
-                                   .AnyAsync(x => x.Name.ToUpper() == payment.Name.ToUpper() &&
-                                                  x.Id != payment.Id);
+                                  .AnyAsync(x => x.Name.ToUpper() == payment.Name.ToUpper() &&
+                                                 x.Id != payment.Id);
         }
 
         public Task<List<Payment>> GetAll()
