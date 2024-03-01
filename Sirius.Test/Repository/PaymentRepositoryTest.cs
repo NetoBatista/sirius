@@ -30,7 +30,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be create a payment")]
         public async Task Create()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var created = await PaymentRepository.Create(payment);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
@@ -39,7 +39,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be update a existing payment")]
         public async Task UpdateExisting()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var created = await PaymentRepository.Create(payment);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
@@ -65,7 +65,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should not be update if the payment not existing")]
         public async Task UpdateNotExisting()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var action = () => PaymentRepository.Update(payment);
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(action);
             Assert.IsNotNull(exception);
@@ -74,10 +74,10 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be delete a existing payment")]
         public async Task DeleteExisting()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             payment.RegisterNavigation =
             [
-                RandomUtil.Register()
+                EntityRandomUtil.Register()
             ];
             var created = await PaymentRepository.Create(payment);
             Assert.IsNotNull(created);
@@ -99,9 +99,9 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be exists payment")]
         public async Task ExistisPayment()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var created = await PaymentRepository.Create(payment);
-            var newPayment = RandomUtil.Payment();
+            var newPayment = EntityRandomUtil.Payment();
             newPayment.Name = created.Name;
             var exists = await PaymentRepository.Exists(newPayment);
             Assert.IsTrue(exists);
@@ -110,7 +110,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should not be exists payment")]
         public async Task NotExistisPayment()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var exists = await PaymentRepository.Exists(payment);
             Assert.IsFalse(exists);
         }
@@ -118,7 +118,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be get all payment")]
         public async Task GetAll()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var created = await PaymentRepository.Create(payment);
             var payments = await PaymentRepository.GetAll();
             Assert.IsNotNull(payments);
@@ -128,7 +128,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be get by id")]
         public async Task GetById()
         {
-            var payment = RandomUtil.Payment();
+            var payment = EntityRandomUtil.Payment();
             var created = await PaymentRepository.Create(payment);
             var payments = await PaymentRepository.GetById(created.Id);
             Assert.IsNotNull(payments);

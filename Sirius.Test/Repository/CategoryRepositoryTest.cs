@@ -30,7 +30,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be create a category")]
         public async Task Create()
         {
-            var category = RandomUtil.Category();
+            var category = EntityRandomUtil.Category();
             var created = await CategoryRepository.Create(category);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
@@ -39,7 +39,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be update a existing category")]
         public async Task UpdateExisting()
         {
-            var category = RandomUtil.Category();
+            var category = EntityRandomUtil.Category();
             var created = await CategoryRepository.Create(category);
             Assert.IsNotNull(created);
             Assert.AreNotEqual(created.Id, Guid.Empty);
@@ -59,7 +59,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should not be update if the category not existing")]
         public async Task UpdateNotExisting()
         {
-            var category = RandomUtil.Category();
+            var category = EntityRandomUtil.Category();
             var action = () => CategoryRepository.Update(category);
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(action);
             Assert.IsNotNull(exception);
@@ -68,11 +68,11 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be delete a existing category")]
         public async Task DeleteExisting()
         {
-            var category = RandomUtil.Category();
-            var payment = RandomUtil.Payment();
+            var category = EntityRandomUtil.Category();
+            var payment = EntityRandomUtil.Payment();
             payment.RegisterNavigation =
             [
-                RandomUtil.Register()
+                EntityRandomUtil.Register()
             ];
             category.PaymentNavigation =
             [
@@ -98,9 +98,9 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be exists category")]
         public async Task ExistisCategory()
         {
-            var category = RandomUtil.Category();
+            var category = EntityRandomUtil.Category();
             var created = await CategoryRepository.Create(category);
-            var newCategory = RandomUtil.Category();
+            var newCategory = EntityRandomUtil.Category();
             newCategory.Name = created.Name;
             var exists = await CategoryRepository.Exists(newCategory);
             Assert.IsTrue(exists);
@@ -109,7 +109,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should not be exists category")]
         public async Task NotExistisCategory()
         {
-            var category = RandomUtil.Category();
+            var category = EntityRandomUtil.Category();
             var exists = await CategoryRepository.Exists(category);
             Assert.IsFalse(exists);
         }
@@ -117,7 +117,7 @@ namespace Sirius.Test.Repository
         [TestMethod("Should be get all category")]
         public async Task GetAll()
         {
-            var category = RandomUtil.Category();
+            var category = EntityRandomUtil.Category();
             var created = await CategoryRepository.Create(category);
             var categories = await CategoryRepository.GetAll();
             Assert.IsNotNull(categories);

@@ -2,22 +2,24 @@
 
 namespace Sirius.Test.Util
 {
-    public static class RandomUtil
+    public static class EntityRandomUtil
     {
-        public static Category Category()
+        public static Category Category(Guid? id = null)
         {
             return new Category
             {
+                Id = id ?? Guid.Empty,
                 Name = $"Category_{Guid.NewGuid()}",
                 Description = $"Description_{Guid.NewGuid()}",
                 CreateAt = DateTime.UtcNow,
             };
         }
 
-        public static Payment Payment()
+        public static Payment Payment(Guid? id = null)
         {
             return new Payment
             {
+                Id = id ?? Guid.Empty,
                 Name = $"Category_{Guid.NewGuid()}",
                 Description = $"Description_{Guid.NewGuid()}",
                 PayDay = 1,
@@ -25,10 +27,11 @@ namespace Sirius.Test.Util
             };
         }
 
-        public static Register Register()
+        public static Register Register(Guid? id = null)
         {
             return new Register
             {
+                Id = id ?? Guid.Empty,
                 Value = 200,
                 PaidAt = DateTime.UtcNow,
             };
