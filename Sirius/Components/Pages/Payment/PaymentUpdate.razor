@@ -2,21 +2,21 @@
 <div class="payment-update-content">
     <div class="d-grid">
         <span>* Nome</span>
-        <input placeholder="Netflix" maxlength="256" @bind-value="request.Name" />
+        <input placeholder="Netflix" maxlength="256" @bind-value="Request.Name" />
     </div>
     <div class="d-grid">
         <span>Descrição</span>
-        <textarea placeholder="Plano premium" rows="5" maxlength="1000" @bind="request.Description" />
+        <textarea placeholder="Plano premium" rows="5" maxlength="1000" @bind="Request.Description" />
     </div>
     <div class="d-grid">
         <span>Valor</span>
-        <InputNumber TValue="decimal" @bind-Value=request.Value class="currency-mask"></InputNumber>
+        <InputNumber TValue="decimal" @bind-Value=Request.Value class="currency-mask"></InputNumber>
     </div>
     <div class="d-grid">
         <span>Categoria</span>
-        <select @bind="request.CategoryId">
+        <select @bind="Request.CategoryId">
             <option value="">Nenhum</option>
-            @foreach (var category in categories)
+            @foreach (var category in Categories)
             {
                 <option value="@category.Id">@category.Name</option>
             }
@@ -24,7 +24,7 @@
     </div>
     <div class="d-grid">
         <span>Dia do pagamento</span>
-        <select @bind="request.PayDay">
+        <select @bind="Request.PayDay">
             <option value="">Nenhum</option>
             @for (var index =1; index <= 31; index ++)
             {
@@ -44,25 +44,25 @@
 
 @code {
     [Inject]
-    private DialogProvider dialogProvider { get; set; } = default!;
+    private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
-    private IPaymentService paymentService { get; set; } = default!;
+    private IPaymentService PaymentService { get; set; } = default!;
     [Inject]
-    private ICategoryService categoryService { get; set; } = default!;
+    private ICategoryService CategoryService { get; set; } = default!;
     [Inject]
-    private ToastProvider toastProvider { get; set; } = default!;
+    private ToastProvider ToastProvider { get; set; } = default!;
     [Inject]
-    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    private JavaScriptProvider JavaScriptProvider { get; set; } = default!;
     [Parameter]
-    public PaymentRequestDTO request { get; set; } = default!;
-    private List<CategoryResponseDTO> categories = new List<CategoryResponseDTO>();
+    public PaymentRequestDTO Request { get; set; } = default!;
+    private List<CategoryResponseDTO> Categories = new List<CategoryResponseDTO>();
 
-    protected override void OnAfterRender(bool firstRender) => javaScriptProvider.ApplyCurrencyMask();
+    protected override void OnAfterRender(bool firstRender) => JavaScriptProvider.ApplyCurrencyMask();
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await categoryService.GetAll();
-        categories = categories.OrderBy(x => x.Name).ToList();
+        Categories = await CategoryService.GetAll();
+        Categories = Categories.OrderBy(x => x.Name).ToList();
         StateHasChanged();
     }
 
@@ -70,28 +70,28 @@
     {
         try
         {
-            if (string.IsNullOrEmpty(request.Name))
+            if (string.IsNullOrEmpty(Request.Name))
             {
-                toastProvider.ShowToast("Nome da pagamento é obrigatório", ToastLevelEnum.Error);
+                ToastProvider.ShowToast("Nome da pagamento é obrigatório", ToastLevelEnum.Error);
                 return;
             }
-            if (await paymentService.Exists(request))
+            if (await PaymentService.Exists(Request))
             {
-                toastProvider.ShowToast("Já existe um pagamento com esse nome", ToastLevelEnum.Error);
+                ToastProvider.ShowToast("Já existe um pagamento com esse nome", ToastLevelEnum.Error);
                 return;
             }
-            var response = await paymentService.Update(request);
-            toastProvider.ShowToast("Atualizado com sucesso com sucesso", ToastLevelEnum.Success);
-            dialogProvider.CloseDialog(response);
+            var response = await PaymentService.Update(Request);
+            ToastProvider.ShowToast("Atualizado com sucesso", ToastLevelEnum.Success);
+            DialogProvider.CloseDialog(response);
         }
         catch(Exception)
         {
-            toastProvider.ShowToast("Erro ao criar pagamento", ToastLevelEnum.Error);
+            ToastProvider.ShowToast("Erro ao criar pagamento", ToastLevelEnum.Error);
         }
     }
 
     private void OnClickClose()
     {
-        dialogProvider.CloseDialog();
+        DialogProvider.CloseDialog();
     }
 }

@@ -2,19 +2,19 @@
 
 <PageTitle>Sirius - Pagamentos</PageTitle>
 
-@if (payments == null)
+@if (Payments == null)
 {
-    <LoadingComponent isInLineProgress=true></LoadingComponent>
+    <LoadingComponent IsInLineProgress=true></LoadingComponent>
 }
 
 <div class="div-search-content-payment">
     <span>Filtros: </span>
-    <input @bind-value="searchContent" @bind-value:event="oninput" placeholder="Nome ou descrição do pagamento" />
+    <input @bind-value="SearchContent" @bind-value:event="oninput" placeholder="Nome ou descrição do pagamento" />
     <button class="btn-default" @onclick=OnClickCreate>
         <span>Novo pagamento</span>
     </button>
 </div>
-<div class="div-content-payment @(payments == null ? "d-none" : "")">
+<div class="div-content-payment @(Payments == null ? "d-none" : "")">
     <table class="table">
         <thead>
             <tr>
@@ -71,18 +71,18 @@
 </div>
 
 @code {
-    private List<PaymentResponseDTO>? payments;
-    private string searchContent = "";
+    private List<PaymentResponseDTO>? Payments;
+    private string SearchContent = "";
     [Inject]
-    private IPaymentService paymentService { get; set; } = default!;
+    private IPaymentService PaymentService { get; set; } = default!;
     [Inject]
-    private DialogProvider dialogProvider { get; set; } = default!;
+    private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
-    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    private JavaScriptProvider JavaScriptProvider { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        payments = await paymentService.GetAll();
+        Payments = await PaymentService.GetAll();
     }
 
     private DateTime? GetPaymentAt(int? payDay)
@@ -97,16 +97,16 @@
 
     private List<PaymentResponseDTO> FilterPayment()
     {
-        if (payments == null)
+        if (Payments == null)
         {
             return [];
         }
-        if (string.IsNullOrEmpty(searchContent))
+        if (string.IsNullOrEmpty(SearchContent))
         {
-            return payments;
+            return Payments;
         }
-        return payments.Where(x => x.Name.ToUpper().Contains(searchContent.ToUpper()) ||
-                                   (x.Description ?? string.Empty).ToUpper().Contains(searchContent.ToUpper()))
+        return Payments.Where(x => x.Name.ToUpper().Contains(SearchContent.ToUpper()) ||
+                                   (x.Description ?? string.Empty).ToUpper().Contains(SearchContent.ToUpper()))
                          .ToList();
     }
 
@@ -116,24 +116,24 @@
         {
             <PaymentCreate />
         };
-        dialogProvider.OpenDialog("Novo pagamento", body, CallBackCreatePayment);
+        DialogProvider.OpenDialog("Novo pagamento", body, CallBackCreatePayment);
     }
 
     private void OnClickUpdate(PaymentResponseDTO payment)
     {
         RenderFragment body = __builder =>
         {
-            <PaymentUpdate request="payment.ToRequest()" />
+            <PaymentUpdate Request="payment.ToRequest()" />
         };
-        dialogProvider.OpenDialog("Atualizar pagamento", body, CallBackUpdatePayment);
+        DialogProvider.OpenDialog("Atualizar pagamento", body, CallBackUpdatePayment);
     }
     private void OnClickDelete(PaymentResponseDTO payment)
     {
         RenderFragment body = __builder =>
         {
-            <PaymentDelete payment="payment" />
+            <PaymentDelete Payment="payment" />
         };
-        dialogProvider.OpenDialog("Remover pagamento", body, CallBackDeletePayment);
+        DialogProvider.OpenDialog("Remover pagamento", body, CallBackDeletePayment);
     }
 
 
@@ -142,7 +142,7 @@
         var created = obj as PaymentResponseDTO;
         if (created != null)
         {
-            payments!.Insert(0, created);
+            Payments!.Insert(0, created);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -150,16 +150,16 @@
 
     private Task CallBackDeletePayment(object? obj)
     {
-        if (payments == null)
+        if (Payments == null)
         {
             return Task.CompletedTask;
         }
         var removed = obj as PaymentResponseDTO;
         if (removed != null)
         {
-            var item = payments.First(x => x.Id == removed.Id);
-            var indexOf = payments.IndexOf(item);
-            payments.RemoveAt(indexOf);
+            var item = Payments.First(x => x.Id == removed.Id);
+            var indexOf = Payments.IndexOf(item);
+            Payments.RemoveAt(indexOf);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -167,17 +167,17 @@
 
     private Task CallBackUpdatePayment(object? obj)
     {
-        if (payments == null)
+        if (Payments == null)
         {
             return Task.CompletedTask;
         }
         var updated = obj as PaymentResponseDTO;
         if (updated != null)
         {
-            var item = payments.First(x => x.Id == updated.Id);
-            var indexOf = payments.IndexOf(item);
-            payments.RemoveAt(indexOf);
-            payments.Insert(indexOf, updated);
+            var item = Payments.First(x => x.Id == updated.Id);
+            var indexOf = Payments.IndexOf(item);
+            Payments.RemoveAt(indexOf);
+            Payments.Insert(indexOf, updated);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -185,7 +185,7 @@
 
     private void OnClickCopyToClipboard(PaymentResponseDTO payment)
     {
-        javaScriptProvider.CopyToClipBoard(payment.Id.ToString());
+        JavaScriptProvider.CopyToClipBoard(payment.Id.ToString());
     }
 
 }

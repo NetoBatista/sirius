@@ -2,19 +2,19 @@
 
 <PageTitle>Sirius - Registros</PageTitle>
 
-@if (registers == null)
+@if (Registers == null)
 {
-    <LoadingComponent isInLineProgress=true></LoadingComponent>
+    <LoadingComponent IsInLineProgress=true></LoadingComponent>
 }
 
 <div class="div-search-content-register">
     <span>Filtros: </span>
-    <input @bind-value="searchContent" @bind-value:event="oninput" placeholder="Nome do pagamento" />
+    <input @bind-value="SearchContent" @bind-value:event="oninput" placeholder="Nome do pagamento" />
     <button class="btn-default" @onclick=OnClickCreate>
         <span>Novo registro</span>
     </button>
 </div>
-<div class="div-content-register @(registers == null ? "d-none" : "")">
+<div class="div-content-register @(Registers == null ? "d-none" : "")">
     <table class="table">
         <thead>
             <tr>
@@ -67,34 +67,34 @@
 </div>
 
 @code {
-    private List<RegisterResponseDTO>? registers;
-    private string searchContent = "";
+    private List<RegisterResponseDTO>? Registers;
+    private string SearchContent = "";
     [Inject]
     private IRegisterService registerService { get; set; } = default!;
     [Inject]
-    private DialogProvider dialogProvider { get; set; } = default!;
+    private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
-    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    private JavaScriptProvider JavaScriptProvider { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
         var currentDate = DateTime.UtcNow;
         var startDate = new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
         var finalDate = new DateTime(currentDate.Year, currentDate.Month + 1, 1, 23, 59, 59, DateTimeKind.Utc).AddDays(-1);
-        registers = await registerService.GetAll(startDate, finalDate);
+        Registers = await registerService.GetAll(startDate, finalDate);
     }
 
     private List<RegisterResponseDTO> FilterRegister()
     {
-        if (registers == null)
+        if (Registers == null)
         {
             return [];
         }
-        if (string.IsNullOrEmpty(searchContent))
+        if (string.IsNullOrEmpty(SearchContent))
         {
-            return registers;
+            return Registers;
         }
-        return registers.Where(x => x.Payment.Name.ToUpper().Contains(searchContent.ToUpper()))
+        return Registers.Where(x => x.Payment.Name.ToUpper().Contains(SearchContent.ToUpper()))
                         .ToList();
     }
 
@@ -104,24 +104,24 @@
         {
             <RegisterCreate />
         };
-        dialogProvider.OpenDialog("Novo registro", body, CallBackCreateRegister);
+        DialogProvider.OpenDialog("Novo registro", body, CallBackCreateRegister);
     }
 
     private void OnClickUpdate(RegisterResponseDTO register)
     {
         RenderFragment body = __builder =>
         {
-            <RegisterUpdate request="register.ToRequest()" />
+            <RegisterUpdate Request="register.ToRequest()" />
         };
-        dialogProvider.OpenDialog("Atualizar registro", body, CallBackUpdateRegister);
+        DialogProvider.OpenDialog("Atualizar registro", body, CallBackUpdateRegister);
     }
     private void OnClickDelete(RegisterResponseDTO register)
     {
         RenderFragment body = __builder =>
         {
-            <RegisterDelete register="register" />
+            <RegisterDelete Register="register" />
         };
-        dialogProvider.OpenDialog("Remover registro", body, CallBackDeleteRegister);
+        DialogProvider.OpenDialog("Remover registro", body, CallBackDeleteRegister);
     }
 
 
@@ -130,7 +130,7 @@
         var created = obj as RegisterResponseDTO;
         if (created != null)
         {
-            registers!.Insert(0, created);
+            Registers!.Insert(0, created);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -138,16 +138,16 @@
 
     private Task CallBackDeleteRegister(object? obj)
     {
-        if (registers == null)
+        if (Registers == null)
         {
             return Task.CompletedTask;
         }
         var removed = obj as RegisterResponseDTO;
         if (removed != null)
         {
-            var item = registers.First(x => x.Id == removed.Id);
-            var indexOf = registers.IndexOf(item);
-            registers.RemoveAt(indexOf);
+            var item = Registers.First(x => x.Id == removed.Id);
+            var indexOf = Registers.IndexOf(item);
+            Registers.RemoveAt(indexOf);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -155,17 +155,17 @@
 
     private Task CallBackUpdateRegister(object? obj)
     {
-        if (registers == null)
+        if (Registers == null)
         {
             return Task.CompletedTask;
         }
         var updated = obj as RegisterResponseDTO;
         if (updated != null)
         {
-            var item = registers.First(x => x.Id == updated.Id);
-            var indexOf = registers.IndexOf(item);
-            registers.RemoveAt(indexOf);
-            registers.Insert(indexOf, updated);
+            var item = Registers.First(x => x.Id == updated.Id);
+            var indexOf = Registers.IndexOf(item);
+            Registers.RemoveAt(indexOf);
+            Registers.Insert(indexOf, updated);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -173,7 +173,7 @@
 
     private void OnClickCopyToClipboard(RegisterResponseDTO register)
     {
-        javaScriptProvider.CopyToClipBoard(register.Id.ToString());
+        JavaScriptProvider.CopyToClipBoard(register.Id.ToString());
     }
 
 }

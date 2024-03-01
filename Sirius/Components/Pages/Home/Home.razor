@@ -3,13 +3,13 @@
 <PageTitle>Sirius - Início</PageTitle>
 
 <div>
-    @if(registers == null)
+    @if(Registers == null)
     {
-        <LoadingComponent isInLineProgress=true></LoadingComponent>
+        <LoadingComponent IsInLineProgress=true></LoadingComponent>
     }
 
     <h3>
-        @DateUtil.GetMonth(currentDate.Month) de @currentDate.Year
+        @DateUtil.GetMonth(CurrentDate.Month) de @(CurrentDate.Year)
     </h3>
 
     <div class="d-flex home-content-header">
@@ -30,7 +30,7 @@
                     <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
                 </svg>
             </div>
-            <h3>@(registers?.Count ?? 0)</h3>
+            <h3>@(Registers?.Count ?? 0)</h3>
         </div>
         <div class="custom-card">
             <div class="d-flex justify-content-between">
@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var register in registers ?? [])
+                    @foreach (var register in Registers ?? [])
                     {
                         <tr>
                             <td>
@@ -114,28 +114,28 @@
 
 @code {
     [Inject]
-    private IRegisterService registerService { get; set; } = default!;
+    private IRegisterService RegisterService { get; set; } = default!;
     [Inject]
-    private IPaymentService paymentService { get; set; } = default!;
-    private List<RegisterResponseDTO>? registers;
-    private List<PaymentResponseDTO>? payments;
-    private DateTime currentDate = DateTime.UtcNow;
+    private IPaymentService PaymentService { get; set; } = default!;
+    private List<RegisterResponseDTO>? Registers;
+    private List<PaymentResponseDTO>? Payments;
+    private DateTime CurrentDate = DateTime.UtcNow;
 
     protected override async Task OnInitializedAsync()
     {
-        var startDate = new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-        var finalDate = new DateTime(currentDate.Year, currentDate.Month + 1, 1, 23, 59, 59, DateTimeKind.Utc).AddDays(-1);
-        registers = await registerService.GetAll(startDate, finalDate);
-        payments = await paymentService.GetAll();
+        var startDate = new DateTime(CurrentDate.Year, CurrentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+        var finalDate = new DateTime(CurrentDate.Year, CurrentDate.Month + 1, 1, 23, 59, 59, DateTimeKind.Utc).AddDays(-1);
+        Registers = await RegisterService.GetAll(startDate, finalDate);
+        Payments = await PaymentService.GetAll();
     }
 
     private decimal GetValueTotalPaid()
     {
-        if (registers == null)
+        if (Registers == null)
         {
             return 0;
         }
-        return registers.Sum(x => x.Value);
+        return Registers.Sum(x => x.Value);
     }
 
     private DateTime? GetPaymentAt(int? payDay)
@@ -150,28 +150,28 @@
 
     private List<PaymentResponseDTO> GetPendingPayments()
     {
-        if (registers == null || payments == null)
+        if (Registers == null || Payments == null)
         {
             return [];
         }
-        return payments.Where(x => !registers.Any(r => r.Payment.Id == x.Id)).ToList();
+        return Payments.Where(x => !Registers.Any(r => r.Payment.Id == x.Id)).ToList();
     }
 
     private int GetTotalPendingPayments()
     {
-        if (registers == null || payments == null)
+        if (Registers == null || Payments == null)
         {
             return 0;
         }
-        return payments.Where(x => !registers.Any(r => r.Payment.Id == x.Id)).Count();
+        return Payments.Where(x => !Registers.Any(r => r.Payment.Id == x.Id)).Count();
     }
 
     private decimal GetValueTotalPendingPayments()
     {
-        if (registers == null || payments == null)
+        if (Registers == null || Payments == null)
         {
             return 0;
         }
-        return payments.Where(x => !registers.Any(r => r.Payment.Id == x.Id)).Sum(x => x.Value);
+        return Payments.Where(x => !Registers.Any(r => r.Payment.Id == x.Id)).Sum(x => x.Value);
     }
 }

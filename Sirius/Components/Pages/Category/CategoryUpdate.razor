@@ -2,11 +2,11 @@
 <div class="category-update-content">
     <div class="d-grid">
         <span>* Nome</span>
-        <input placeholder="Streaming" maxlength="256" @bind-value="request.Name" />
+        <input placeholder="Streaming" maxlength="256" @bind-value="Request.Name" />
     </div>
     <div class="d-grid">
         <span>Descrição</span>
-        <textarea placeholder="Netflix + HBO + Amazon prime" rows="5" maxlength="1000" @bind="request.Description" />
+        <textarea placeholder="Netflix + HBO + Amazon prime" rows="5" maxlength="1000" @bind="Request.Description" />
     </div>
     <div class="d-flex category-update-action">
         <button class="btn-default" @onclick=OnClickClose>
@@ -20,40 +20,40 @@
 
 @code {
     [Inject]
-    private DialogProvider dialogProvider { get; set; } = default!;
+    private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
-    private ICategoryService categoryService { get; set; } = default!;
+    private ICategoryService CategoryService { get; set; } = default!;
     [Parameter]
-    public CategoryRequestDTO request { get; set; } = default!;
+    public CategoryRequestDTO Request { get; set; } = default!;
     [Inject]
-    private ToastProvider toastProvider { get; set; } = default!;
+    private ToastProvider ToastProvider { get; set; } = default!;
 
     private async Task OnClickUpdate()
     {
         try
         {
-            if (string.IsNullOrEmpty(request.Name))
+            if (string.IsNullOrEmpty(Request.Name))
             {
-                toastProvider.ShowToast("Nome da categoria é obrigatório", ToastLevelEnum.Error);
+                ToastProvider.ShowToast("Nome da categoria é obrigatório", ToastLevelEnum.Error);
                 return;
             }
-            if (await categoryService.Exists(request))
+            if (await CategoryService.Exists(Request))
             {
-                toastProvider.ShowToast("Já existe uma categoria com esse nome", ToastLevelEnum.Error);
+                ToastProvider.ShowToast("Já existe uma categoria com esse nome", ToastLevelEnum.Error);
                 return;
             }
-            var response = await categoryService.Update(request);
-            toastProvider.ShowToast("Atualizado com sucesso", ToastLevelEnum.Success);
-            dialogProvider.CloseDialog(response);
+            var response = await CategoryService.Update(Request);
+            ToastProvider.ShowToast("Atualizado com sucesso", ToastLevelEnum.Success);
+            DialogProvider.CloseDialog(response);
         }
         catch (Exception)
         {
-            toastProvider.ShowToast("Erro ao atualizar categoria", ToastLevelEnum.Error);
+            ToastProvider.ShowToast("Erro ao atualizar categoria", ToastLevelEnum.Error);
         }
     }
 
     private void OnClickClose()
     {
-        dialogProvider.CloseDialog();
+        DialogProvider.CloseDialog();
     }
 }

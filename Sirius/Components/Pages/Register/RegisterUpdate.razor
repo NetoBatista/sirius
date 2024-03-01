@@ -3,7 +3,7 @@
     <div class="d-grid">
         <span>Pagamento</span>
         <select @bind=selectedPayment>
-            @foreach (var payment in payments)
+            @foreach (var payment in Payments)
             {
                 <option value="@payment.Id">@payment.Name</option>
             }
@@ -11,11 +11,11 @@
     </div>
     <div class="d-grid">
         <span>Valor</span>
-        <InputNumber TValue="decimal" @bind-Value=request.Value class="currency-mask"></InputNumber>
+        <InputNumber TValue="decimal" @bind-Value=Request.Value class="currency-mask"></InputNumber>
     </div>
     <div class="d-grid">
         <span>Data do pagamento</span>
-        <input type="date" @bind-value=request.PaidAt
+        <input type="date" @bind-value=Request.PaidAt
                max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
                min="@DateUtil.GetMinDate().ToString("yyyy-MM-dd")" />
     </div>
@@ -31,38 +31,38 @@
 
 @code {
     [Inject]
-    private DialogProvider dialogProvider { get; set; } = default!;
+    private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
     private IRegisterService registerService { get; set; } = default!;
     [Inject]
-    private IPaymentService paymentService { get; set; } = default!;
+    private IPaymentService PaymentService { get; set; } = default!;
     [Inject]
-    private ToastProvider toastProvider { get; set; } = default!;
+    private ToastProvider ToastProvider { get; set; } = default!;
     [Inject]
-    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    private JavaScriptProvider JavaScriptProvider { get; set; } = default!;
     [Parameter]
-    public RegisterRequestDTO request { get; set; } = default!;
-    private List<PaymentResponseDTO> payments = new List<PaymentResponseDTO>();
+    public RegisterRequestDTO Request { get; set; } = default!;
+    private List<PaymentResponseDTO> Payments = new List<PaymentResponseDTO>();
 
     public Guid selectedPayment
     {
         get
         {
-            return request.PaymentId;
+            return Request.PaymentId;
         }
         set
         {
-            request.PaymentId = value;
+            Request.PaymentId = value;
             OnChangePayment(value);
         }
     }
 
-    protected override void OnAfterRender(bool firstRender) => javaScriptProvider.ApplyCurrencyMask();
+    protected override void OnAfterRender(bool firstRender) => JavaScriptProvider.ApplyCurrencyMask();
 
     protected override async Task OnInitializedAsync()
     {
-        payments = await paymentService.GetAll();
-        payments = payments.OrderBy(x => x.Name).ToList();
+        Payments = await PaymentService.GetAll();
+        Payments = Payments.OrderBy(x => x.Name).ToList();
         StateHasChanged();
     }
 
@@ -70,38 +70,38 @@
     {
         try
         {
-            if (request.PaymentId == Guid.Empty)
+            if (Request.PaymentId == Guid.Empty)
             {
-                toastProvider.ShowToast("É necessário selecionar um pagamento", ToastLevelEnum.Error);
+                ToastProvider.ShowToast("É necessário selecionar um pagamento", ToastLevelEnum.Error);
                 return;
             }
-            request.PaidAt = request.PaidAt.ToUniversalTime();
-            if (request.PaidAt > DateTime.UtcNow || request.PaidAt < DateUtil.GetMinDate())
+            Request.PaidAt = Request.PaidAt.ToUniversalTime();
+            if (Request.PaidAt > DateTime.UtcNow || Request.PaidAt < DateUtil.GetMinDate())
             {
                 var error = $"Data precisar ser entre {DateTime.UtcNow.ToShortDateString()} e {DateUtil.GetMinDate().ToShortDateString()}";
-                toastProvider.ShowToast(error, ToastLevelEnum.Error);
+                ToastProvider.ShowToast(error, ToastLevelEnum.Error);
                 return;
             }
-            var response = await registerService.Update(request);
-            toastProvider.ShowToast("Criado com sucesso", ToastLevelEnum.Success);
-            dialogProvider.CloseDialog(response);
+            var response = await registerService.Update(Request);
+            ToastProvider.ShowToast("Criado com sucesso", ToastLevelEnum.Success);
+            DialogProvider.CloseDialog(response);
         }
         catch(Exception)
         {
-            toastProvider.ShowToast("Erro ao atualizar registro", ToastLevelEnum.Error);
+            ToastProvider.ShowToast("Erro ao atualizar registro", ToastLevelEnum.Error);
         }
     }
 
     private void OnChangePayment(Guid paymentId)
     {
-        var payment = payments.First(x => x.Id == paymentId);
-        request.PaymentId = payment.Id;
-        request.Value = payment.Value;
+        var payment = Payments.First(x => x.Id == paymentId);
+        Request.PaymentId = payment.Id;
+        Request.Value = payment.Value;
         StateHasChanged();
     }
 
     private void OnClickClose()
     {
-        dialogProvider.CloseDialog();
+        DialogProvider.CloseDialog();
     }
 }
