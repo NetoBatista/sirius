@@ -20,6 +20,10 @@ namespace Sirius.Domain.Entity
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (optionsBuilder.IsConfigured)
+            {
+                return;
+            }
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
             if (string.IsNullOrEmpty(connectionString))
             {
