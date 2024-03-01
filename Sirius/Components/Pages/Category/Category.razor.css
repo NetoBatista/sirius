@@ -1,4 +1,24 @@
-﻿.div-search-content-category > span {
+﻿.div-search-content-category {
+    position: relative;
+    display: flex;
+}
+
+.div-search-content-category input {
+    padding-left: 32px;
+}
+
+.div-search-content-category > div {
+    position: relative;
+    display: flex;
+}
+
+.div-search-content-category svg {
+    position: absolute;
+    top: 25%;
+    left: 8px;
+}
+
+.div-search-content-category > span {
     margin-right: 1em;
 }
 
@@ -7,7 +27,7 @@
 }
 
 .div-search-content-category input {
-    width: 20em;
+    width: 24em;
 }
 
 .div-content-category {
