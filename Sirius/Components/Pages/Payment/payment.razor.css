@@ -1,4 +1,24 @@
-﻿.div-search-content-payment > span {
+﻿.div-search-content-payment {
+    position: relative;
+    display: flex;
+}
+
+.div-search-content-payment input {
+    padding-left: 32px;
+}
+
+.div-search-content-payment > div {
+    position: relative;
+    display: flex;
+}
+
+.div-search-content-payment svg {
+    position: absolute;
+    top: 25%;
+    left: 8px;
+}
+
+.div-search-content-payment > span {
     margin-right: 1em;
 }
 
@@ -7,7 +27,7 @@
 }
 
 .div-search-content-payment input {
-    width: 20em;
+    width: 24em;
 }
 
 .div-content-payment {

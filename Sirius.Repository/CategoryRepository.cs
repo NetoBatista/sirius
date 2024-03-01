@@ -17,13 +17,9 @@ namespace Sirius.Repository
         public async Task Delete(Guid id)
         {
             var category = context.Category.AsNoTracking()
-                                            .Include(x => x.PaymentNavigation)
-                                            .ThenInclude(x => x.RegisterNavigation)
-                                            .FirstOrDefault(x => x.Id == id);
-            if (category == null)
-            {
-                return;
-            }
+                                           .Include(x => x.PaymentNavigation)
+                                           .ThenInclude(x => x.RegisterNavigation)
+                                           .First(x => x.Id == id);
             context.Category.Remove(category);
             await context.SaveChangesAsync();
         }
@@ -31,15 +27,15 @@ namespace Sirius.Repository
         public Task<bool> Exists(Category category)
         {
             return context.Category.AsNoTracking()
-                                    .AnyAsync(x => x.Name.ToUpper() == category.Name.ToUpper() &&
-                                                   x.Id != category.Id);
+                                   .AnyAsync(x => x.Name.ToUpper() == category.Name.ToUpper() &&
+                                                  x.Id != category.Id);
         }
 
         public Task<List<Category>> GetAll()
         {
             return context.Category.AsNoTracking()
-                                    .OrderByDescending(x => x.CreateAt)
-                                    .ToListAsync();
+                                   .OrderByDescending(x => x.CreateAt)
+                                   .ToListAsync();
         }
 
         public async Task<Category> Update(Category category)

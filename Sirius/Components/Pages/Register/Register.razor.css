@@ -1,4 +1,24 @@
-﻿.div-search-content-register > span {
+﻿.div-search-content-register {
+    position: relative;
+    display: flex;
+}
+
+.div-search-content-register input {
+    padding-left: 32px;
+}
+
+.div-search-content-register > div {
+    position: relative;
+    display: flex;
+}
+
+.div-search-content-register svg {
+    position: absolute;
+    top: 25%;
+    left: 8px;
+}
+
+.div-search-content-register > span {
     margin-right: 1em;
 }
 
@@ -7,7 +27,7 @@
 }
 
 .div-search-content-register input {
-    width: 20em;
+    width: 24em;
 }
 
 .div-content-register {

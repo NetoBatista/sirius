@@ -16,11 +16,7 @@ namespace Sirius.Repository
         public async Task Delete(Guid id)
         {
             var register = context.Register.AsNoTracking()
-                                           .FirstOrDefault(x => x.Id == id);
-            if (register == null)
-            {
-                return;
-            }
+                                           .First(x => x.Id == id);
             context.Register.Remove(register);
             await context.SaveChangesAsync();
         }
@@ -28,9 +24,10 @@ namespace Sirius.Repository
         public Task<List<Register>> GetAll(DateTime startDate, DateTime finalDate)
         {
             return context.Register.Include(x => x.PaymentNavigation)
-                                   .AsNoTracking().Where(x => x.PaidAt >= startDate && x.PaidAt <= finalDate)
-                                                  .OrderByDescending(x => x.PaidAt)
-                                                  .ToListAsync();
+                                   .AsNoTracking()
+                                   .Where(x => x.PaidAt >= startDate && x.PaidAt <= finalDate)
+                                   .OrderByDescending(x => x.PaidAt)
+                                   .ToListAsync();
         }
 
         public async Task<Register> Update(Register register)
