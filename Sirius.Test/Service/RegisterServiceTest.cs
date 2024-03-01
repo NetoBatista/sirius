@@ -55,7 +55,7 @@ namespace Sirius.Test.Service
         {
             var mockRegister = new Mock<IRegisterRepository>();
             var mockPayment = new Mock<IPaymentRepository>();
-            mockRegister.Setup(x => x.Delete(It.IsAny<Guid>())).ThrowsAsync(new InvalidOperationException()); ;
+            mockRegister.Setup(x => x.Delete(It.IsAny<Guid>())).ThrowsAsync(new InvalidOperationException());
             IRegisterService service = new RegisterService(mockRegister.Object, mockPayment.Object);
             var action = () => service.Delete(Guid.NewGuid());
             var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(action);

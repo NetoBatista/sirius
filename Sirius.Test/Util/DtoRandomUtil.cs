@@ -15,6 +15,19 @@ namespace Sirius.Test.Util
             };
         }
 
+        public static PaymentRequestDTO PaymentRequestDTO(Guid? id = null)
+        {
+            return new PaymentRequestDTO
+            {
+                Id = id,
+                CategoryId = Guid.NewGuid(),
+                Description = $"Description_{Guid.NewGuid()}",
+                Name = $"Category_{Guid.NewGuid()}",
+                PayDay = 15,
+                Value = 100,
+            };
+        }
+
         public static RegisterResponseDTO RegisterResponseDTO()
         {
             return new RegisterResponseDTO
