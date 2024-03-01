@@ -1,15 +1,15 @@
-﻿@if (isInLineProgress)
+﻿@if (IsInLineProgress)
 {
-    <div class="loader-inline" style=@style></div>
+    <div class="loader-inline" style=@Style></div>
 }
 else 
 {
-    <div class="loader-circle" style=@style></div>
+    <div class="loader-circle" style=@Style></div>
 }
 
 @code {
     [Parameter]
-    public string style { get; set; } = string.Empty;
+    public string Style { get; set; } = string.Empty;
     [Parameter]
-    public bool isInLineProgress { get; set; } = false;
+    public bool IsInLineProgress { get; set; } = false;
 }

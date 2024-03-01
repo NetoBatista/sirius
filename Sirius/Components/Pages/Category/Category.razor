@@ -2,19 +2,19 @@
 
 <PageTitle>Sirius - Categorias</PageTitle>
 
-@if (categories == null)
+@if (Categories == null)
 {
-    <LoadingComponent isInLineProgress=true></LoadingComponent>
+    <LoadingComponent IsInLineProgress=true></LoadingComponent>
 }
 
 <div class="div-search-content-category">
     <span>Filtros: </span>
-    <input @bind-value="searchContent" @bind-value:event="oninput" placeholder="Nome ou descrição da categoria" />
+    <input @bind-value="SearchContent" @bind-value:event="oninput" placeholder="Nome ou descrição da categoria" />
     <button class="btn-default" @onclick=OnClickCreate>
         <span>Nova categoria</span>
     </button>
 </div>
-<div class="div-content-category @(categories == null ? "d-none" : "")">
+<div class="div-content-category @(Categories == null ? "d-none" : "")">
     <table class="table">
         <thead>
             <tr>
@@ -67,32 +67,32 @@
 </div>
 
 @code {
-    private List<CategoryResponseDTO>? categories;
-    private string searchContent = "";
+    private List<CategoryResponseDTO>? Categories;
+    private string SearchContent = "";
     [Inject]
-    private ICategoryService categoryService { get; set; } = default!;
+    private ICategoryService CategoryService { get; set; } = default!;
     [Inject]
-    private DialogProvider dialogProvider { get; set; } = default!;
+    private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
-    private JavaScriptProvider javaScriptProvider { get; set; } = default!;
+    private JavaScriptProvider JavaScriptProvider { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
-        categories = await categoryService.GetAll();
+        Categories = await CategoryService.GetAll();
     }
 
     private List<CategoryResponseDTO> FilterCategory()
     {
-        if (categories == null)
+        if (Categories == null)
         {
             return [];
         }
-        if (string.IsNullOrEmpty(searchContent))
+        if (string.IsNullOrEmpty(SearchContent))
         {
-            return categories;
+            return Categories;
         }
-        return categories.Where(x => x.Name.ToUpper().Contains(searchContent.ToUpper()) ||
-                                     (x.Description ?? string.Empty).ToUpper().Contains(searchContent.ToUpper()))
+        return Categories.Where(x => x.Name.ToUpper().Contains(SearchContent.ToUpper()) ||
+                                     (x.Description ?? string.Empty).ToUpper().Contains(SearchContent.ToUpper()))
                          .ToList();
     }
 
@@ -102,24 +102,24 @@
         {
             <CategoryCreate />
         };
-        dialogProvider.OpenDialog("Nova categoria", body, CallBackCreateCategory);
+        DialogProvider.OpenDialog("Nova categoria", body, CallBackCreateCategory);
     }
 
     private void OnClickUpdate(CategoryResponseDTO category)
     {
         RenderFragment body = __builder =>
         {
-            <CategoryUpdate request="category.ToRequest()" />
+            <CategoryUpdate Request="category.ToRequest()" />
         };
-        dialogProvider.OpenDialog("Atualizar categoria", body, CallBackUpdateCategory);
+        DialogProvider.OpenDialog("Atualizar categoria", body, CallBackUpdateCategory);
     }
     private void OnClickDelete(CategoryResponseDTO category)
     {
         RenderFragment body = __builder =>
         {
-            <CategoryDelete category="category" />
+            <CategoryDelete Category="category" />
         };
-        dialogProvider.OpenDialog("Remover categoria", body, CallBackDeleteCategory);
+        DialogProvider.OpenDialog("Remover categoria", body, CallBackDeleteCategory);
     }
 
 
@@ -128,7 +128,7 @@
         var created = obj as CategoryResponseDTO;
         if (created != null)
         {
-            categories!.Insert(0, created);
+            Categories!.Insert(0, created);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -136,16 +136,16 @@
 
     private Task CallBackDeleteCategory(object? obj)
     {
-        if (categories == null)
+        if (Categories == null)
         {
             return Task.CompletedTask;
         }
         var removed = obj as CategoryResponseDTO;
         if (removed != null)
         {
-            var item = categories.First(x => x.Id == removed.Id);
-            var indexOf = categories.IndexOf(item);
-            categories.RemoveAt(indexOf);
+            var item = Categories.First(x => x.Id == removed.Id);
+            var indexOf = Categories.IndexOf(item);
+            Categories.RemoveAt(indexOf);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -153,17 +153,17 @@
 
     private Task CallBackUpdateCategory(object? obj)
     {
-        if(categories == null)
+        if(Categories == null)
         {
             return Task.CompletedTask;
         }
         var updated = obj as CategoryResponseDTO;
         if (updated != null)
         {
-            var item = categories.First(x => x.Id == updated.Id);
-            var indexOf = categories.IndexOf(item);
-            categories.RemoveAt(indexOf);
-            categories.Insert(indexOf, updated);
+            var item = Categories.First(x => x.Id == updated.Id);
+            var indexOf = Categories.IndexOf(item);
+            Categories.RemoveAt(indexOf);
+            Categories.Insert(indexOf, updated);
             StateHasChanged();
         }
         return Task.CompletedTask;
@@ -171,7 +171,7 @@
 
     private void OnClickCopyToClipboard(CategoryResponseDTO category)
     {
-        javaScriptProvider.CopyToClipBoard(category.Id.ToString());
+        JavaScriptProvider.CopyToClipBoard(category.Id.ToString());
     }
 
 }

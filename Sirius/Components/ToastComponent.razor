@@ -10,12 +10,12 @@
     private string? _backgroundCssClass;
 
     [Inject]
-    private ToastProvider toastProvider { get; set; } = default!;
+    private ToastProvider ToastProvider { get; set; } = default!;
 
     protected override void OnInitialized()
     {
-        toastProvider.OnShow += ShowToast;
-        toastProvider.OnHide += HideToast;
+        ToastProvider.OnShow += ShowToast;
+        ToastProvider.OnHide += HideToast;
     }
 
     private void ShowToast(string message, ToastLevelEnum level)
