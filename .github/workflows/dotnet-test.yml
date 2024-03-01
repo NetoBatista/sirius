@@ -3,7 +3,7 @@ name: .NET Test
 on:
   push:
     branches:
-      - main  # Altere isso para o nome da sua branch principal
+      - main
   pull_request:
     branches:
       - '*'
