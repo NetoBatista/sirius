@@ -15,19 +15,6 @@ namespace Sirius.Test.Util
             };
         }
 
-        public static PaymentRequestDTO PaymentRequestDTO(Guid? id = null)
-        {
-            return new PaymentRequestDTO
-            {
-                Id = id,
-                CategoryId = Guid.NewGuid(),
-                Description = $"Description_{Guid.NewGuid()}",
-                Name = $"Category_{Guid.NewGuid()}",
-                PayDay = 15,
-                Value = 100,
-            };
-        }
-
         public static RegisterResponseDTO RegisterResponseDTO()
         {
             return new RegisterResponseDTO
@@ -52,5 +39,37 @@ namespace Sirius.Test.Util
             };
         }
 
+        public static PaymentRequestDTO PaymentRequestDTO(Guid? id = null)
+        {
+            return new PaymentRequestDTO
+            {
+                Id = id,
+                CategoryId = Guid.NewGuid(),
+                Description = $"Description_{Guid.NewGuid()}",
+                Name = $"Category_{Guid.NewGuid()}",
+                PayDay = 15,
+                Value = 100,
+            };
+        }
+
+        public static CategoryRequestDTO CategoryRequestDTO(Guid? id = null)
+        {
+            return new CategoryRequestDTO
+            {
+                Id = id,
+                Description = $"Description_{Guid.NewGuid()}",
+                Name = $"Category_{Guid.NewGuid()}",
+            };
+        }
+
+        public static CategoryResponseDTO CategoryResponseDTO()
+        {
+            return new CategoryResponseDTO
+            {
+                Id = Guid.NewGuid(),
+                Description = $"Description_{Guid.NewGuid()}",
+                Name = $"Category_{Guid.NewGuid()}",
+            };
+        }
     }
 }
