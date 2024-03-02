@@ -92,8 +92,8 @@ namespace Sirius.Test.Repository
             Assert.IsNotNull(exception);
         }
 
-        [TestMethod("Should be get all register")]
-        public async Task GetAll()
+        [TestMethod("Should be get all register by date")]
+        public async Task GetAllByDate()
         {
             var register = EntityRandomUtil.Register();
             register.PaymentNavigation = EntityRandomUtil.Payment();
@@ -102,6 +102,17 @@ namespace Sirius.Test.Repository
             var startDate = new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
             var finalDate = new DateTime(currentDate.Year, currentDate.Month, 1, 23, 59, 59, DateTimeKind.Utc).AddMonths(2).AddDays(-1);
             var registers = await RegisterRepository.GetAll(startDate, finalDate);
+            Assert.IsNotNull(registers);
+            Assert.IsTrue(registers.Any(x => x.Id == created.Id));
+        }
+
+        [TestMethod("Should be get all register")]
+        public async Task GetAll()
+        {
+            var register = EntityRandomUtil.Register();
+            register.PaymentNavigation = EntityRandomUtil.Payment();
+            var created = await RegisterRepository.Create(register);
+            var registers = await RegisterRepository.GetAll();
             Assert.IsNotNull(registers);
             Assert.IsTrue(registers.Any(x => x.Id == created.Id));
         }

@@ -8,5 +8,6 @@ namespace Sirius.Domain.Interface.Repository
         Task<Register> Update(Register register);
         Task Delete(Guid id);
         Task<List<Register>> GetAll(DateTime startDate, DateTime finalDate);
+        Task<List<Register>> GetAll();
     }
 }
