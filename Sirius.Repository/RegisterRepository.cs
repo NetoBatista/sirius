@@ -30,6 +30,14 @@ namespace Sirius.Repository
                                    .ToListAsync();
         }
 
+        public Task<List<Register>> GetAll()
+        {
+            return context.Register.Include(x => x.PaymentNavigation)
+                                   .AsNoTracking()
+                                   .OrderByDescending(x => x.PaidAt)
+                                   .ToListAsync();
+        }
+
         public async Task<Register> Update(Register register)
         {
             var entity = context.Register.AsNoTracking().First(x => x.Id == register.Id);

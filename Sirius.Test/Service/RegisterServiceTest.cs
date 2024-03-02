@@ -62,8 +62,8 @@ namespace Sirius.Test.Service
             Assert.IsNotNull(exception);
         }
 
-        [TestMethod("Should be get all registers")]
-        public async Task GetAll()
+        [TestMethod("Should be get all by date registers")]
+        public async Task GetAllByDate()
         {
             var mockRegister = new Mock<IRegisterRepository>();
             var mockPayment = new Mock<IPaymentRepository>();
@@ -75,6 +75,22 @@ namespace Sirius.Test.Service
                         .ReturnsAsync([register1, register2]);
             IRegisterService service = new RegisterService(mockRegister.Object, mockPayment.Object);
             var response = await service.GetAll(DateTime.UtcNow, DateTime.UtcNow);
+            Assert.IsTrue(response.Any());
+        }
+
+        [TestMethod("Should be get all registers")]
+        public async Task GetAll()
+        {
+            var mockRegister = new Mock<IRegisterRepository>();
+            var mockPayment = new Mock<IPaymentRepository>();
+            var register1 = EntityRandomUtil.Register(id: Guid.NewGuid());
+            register1.PaymentNavigation = EntityRandomUtil.Payment(id: Guid.NewGuid());
+            var register2 = EntityRandomUtil.Register(id: Guid.NewGuid());
+            register2.PaymentNavigation = EntityRandomUtil.Payment(id: Guid.NewGuid());
+            mockRegister.Setup(x => x.GetAll())
+                        .ReturnsAsync([register1, register2]);
+            IRegisterService service = new RegisterService(mockRegister.Object, mockPayment.Object);
+            var response = await service.GetAll();
             Assert.IsTrue(response.Any());
         }
 

@@ -8,5 +8,6 @@ namespace Sirius.Domain.Interface.Service
         Task<RegisterResponseDTO> Update(RegisterRequestDTO request);
         Task Delete(Guid id);
         Task<List<RegisterResponseDTO>> GetAll(DateTime startDate, DateTime finalDate);
+        Task<List<RegisterResponseDTO>> GetAll();
     }
 }

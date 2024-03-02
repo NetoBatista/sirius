@@ -26,6 +26,12 @@ namespace Sirius.Service
             return response.Select(x => x.ToResponse()).ToList();
         }
 
+        public async Task<List<RegisterResponseDTO>> GetAll()
+        {
+            var response = await registerRepository.GetAll();
+            return response.Select(x => x.ToResponse()).ToList();
+        }
+
         public async Task<RegisterResponseDTO> Update(RegisterRequestDTO request)
         {
             var entity = request.ToEntity();
