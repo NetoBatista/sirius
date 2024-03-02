@@ -33,7 +33,7 @@
     [Inject]
     private DialogProvider DialogProvider { get; set; } = default!;
     [Inject]
-    private IRegisterService registerService { get; set; } = default!;
+    private IRegisterService RegisterService { get; set; } = default!;
     [Inject]
     private IPaymentService PaymentService { get; set; } = default!;
     [Inject]
@@ -82,7 +82,7 @@
                 ToastProvider.ShowToast(error, ToastLevelEnum.Error);
                 return;
             }
-            var response = await registerService.Update(Request);
+            var response = await RegisterService.Update(Request);
             ToastProvider.ShowToast("Criado com sucesso", ToastLevelEnum.Success);
             DialogProvider.CloseDialog(response);
         }
