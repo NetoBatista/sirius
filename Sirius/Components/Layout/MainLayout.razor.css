@@ -1,31 +1,7 @@
-.page {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
-
-.top-row ::deep a, .top-row ::deep .btn-link {
-    white-space: nowrap;
-    margin-left: 1.5rem;
-    text-decoration: none;
-}
-
-.top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
-    text-decoration: underline;
-}
-
-.top-row ::deep a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-@media (max-width: 640.98px) {
+@media (max-width: 799.99px) {
     .top-row {
         display:none;
+
     }
 
     .top-row ::deep a, .top-row ::deep .btn-link {
@@ -35,9 +11,13 @@ main {
     .sidebar {
         background: #171717;
     }
+
+    .content-main {
+        margin-top: 1em;
+    }
 }
 
-@media (min-width: 641px) {
+@media (min-width: 800px) {
     .page {
         flex-direction: row;
     }
@@ -70,6 +50,31 @@ main {
         overflow: auto;
         height: 90vh;
     }
+}
+
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.top-row ::deep a, .top-row ::deep .btn-link {
+    white-space: nowrap;
+    margin-left: 1.5rem;
+    text-decoration: none;
+}
+
+.top-row ::deep a:hover, .top-row ::deep .btn-link:hover {
+    text-decoration: underline;
+}
+
+.top-row ::deep a:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #blazor-error-ui {
