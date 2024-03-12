@@ -1,3 +1,23 @@
+@media (max-width: 799.99px) {
+}
+
+@media (min-width: 800px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .nav-scrollable {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+        /* Allow sidebar to scroll for tall menus */
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+    .top-row {
+        background-color: rgba(0,0,0,0.4);
+    }
+}
+
 .navbar-toggler {
     appearance: none;
     cursor: pointer;
@@ -17,7 +37,6 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
 }
 
 .navbar-brand {
@@ -89,17 +108,4 @@
     display: block;
 }
 
-@media (min-width: 641px) {
-    .navbar-toggler {
-        display: none;
-    }
 
-    .nav-scrollable {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
-
-        /* Allow sidebar to scroll for tall menus */
-        height: calc(100vh - 3.5rem);
-        overflow-y: auto;
-    }
-}

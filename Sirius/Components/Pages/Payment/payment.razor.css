@@ -1,6 +1,49 @@
-﻿.div-search-content-payment {
-    position: relative;
-    display: flex;
+﻿@media (max-width: 799.99px) {
+    .div-search-content-payment {
+        display: grid;
+    }
+
+    .div-search-content-payment input {
+        width: 100%;
+    }
+
+    .div-search-content-payment button {
+        margin-top: 1em;
+    }
+
+    tr td:nth-child(2), tr th:nth-child(2), 
+    tr td:nth-child(4), tr th:nth-child(4), 
+    tr td:nth-child(5), tr th:nth-child(5) {
+        display: none;
+    }
+
+    tr td:first-child button:nth-child(3) {
+        display: none;
+    }
+}
+
+@media (min-width: 800px) {
+    .div-search-content-payment {
+        position: relative;
+        display: flex;
+    }
+
+    .div-search-content-payment input {
+        width: 24em;
+    }
+
+    .div-search-content-payment button {
+        margin-left: 1em;
+    }
+
+    tr td:nth-child(1), tr th:nth-child(1) {
+        width: 10em;
+    }
+
+}
+
+tr td:nth-child(1), tr th:nth-child(1) {
+    width: 8em;
 }
 
 .div-search-content-payment input {
@@ -20,14 +63,6 @@
 
 .div-search-content-payment > span {
     margin-right: 1em;
-}
-
-.div-search-content-payment button {
-    margin-left: 1em;
-}
-
-.div-search-content-payment input {
-    width: 24em;
 }
 
 .div-content-payment {

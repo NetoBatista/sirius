@@ -1,4 +1,25 @@
-﻿.home-content-header {
+﻿@media (max-width: 799.99px) {
+    .home-content-header, .home-content {
+        display: grid;
+    }
+    .home-content-header div {
+        margin-bottom: 1em;
+    }
+    .home-content-payments {
+        width: 100%;
+    }
+}
+
+@media (min-width: 800px) {
+    .home-content-header, .home-content {
+        display: flex;
+    }
+    .home-content-payments {
+        width: 60%;
+    }
+}
+
+.home-content-header {
     margin-top: 1em;
 }
 
@@ -20,9 +41,7 @@
     margin-right: 2em;
 }
 
-.home-content-payments {
-    width: 60%;
-}
+
 
 .home-content-registers table, .home-content-payments table {
     border: 1px solid grey;
