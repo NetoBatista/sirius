@@ -11,7 +11,7 @@
             }
             catch (Exception)
             {
-                var response = new DateTime(currentDate.Year, currentDate.Month + 1, 1);
+                var response = new DateTime(currentDate.Year, currentDate.Month, 1).AddMonths(1);
                 return response.AddDays(-1);
             }
         }

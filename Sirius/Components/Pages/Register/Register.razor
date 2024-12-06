@@ -84,7 +84,7 @@
     {
         var currentDate = DateTime.UtcNow;
         var startDate = new DateTime(currentDate.Year, currentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-        var finalDate = new DateTime(currentDate.Year, currentDate.Month + 1, 1, 23, 59, 59, DateTimeKind.Utc).AddDays(-1);
+        var finalDate = new DateTime(currentDate.Year, currentDate.Month, 1, 23, 59, 59, DateTimeKind.Utc).AddMonths(1).AddDays(-1);
         Registers = await RegisterService.GetAll();
     }
 

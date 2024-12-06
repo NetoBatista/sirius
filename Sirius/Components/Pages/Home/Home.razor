@@ -113,7 +113,7 @@
     protected override async Task OnInitializedAsync()
     {
         var startDate = new DateTime(CurrentDate.Year, CurrentDate.Month, 1, 0, 0, 0, DateTimeKind.Utc);
-        var finalDate = new DateTime(CurrentDate.Year, CurrentDate.Month + 1, 1, 23, 59, 59, DateTimeKind.Utc).AddDays(-1);
+        var finalDate = new DateTime(CurrentDate.Year, CurrentDate.Month, 1, 23, 59, 59, DateTimeKind.Utc).AddMonths(1).AddDays(-1);
         Registers = await RegisterService.GetAll(startDate, finalDate);
         Payments = await PaymentService.GetAll();
     }
